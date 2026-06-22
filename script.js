@@ -191,8 +191,6 @@ for (const gallery of galleries) {
   const slides = Array.from(gallery.querySelectorAll(".gallery-slide"));
   const track = gallery.querySelector(".gallery-track");
   const dotsHost = gallery.querySelector(".gallery-dots");
-  const prevButton = gallery.querySelector("[data-gallery-prev]");
-  const nextButton = gallery.querySelector("[data-gallery-next]");
   let currentIndex = 0;
   let autoTimer = 0;
   let pointerStartX = 0;
@@ -238,16 +236,6 @@ for (const gallery of galleries) {
       showSlide(currentIndex + 1);
     }, 4200);
   }
-
-  prevButton?.addEventListener("click", () => {
-    showSlide(currentIndex - 1);
-    restartAuto();
-  });
-
-  nextButton?.addEventListener("click", () => {
-    showSlide(currentIndex + 1);
-    restartAuto();
-  });
 
   track?.addEventListener("pointerdown", (event) => {
     pointerStartX = event.clientX;
