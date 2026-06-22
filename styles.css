@@ -264,10 +264,47 @@ a {
   font-size: 3rem;
 }
 
-.intro-band p:last-child {
+.intro-band > p {
   margin: 0;
   color: rgba(23, 20, 17, 0.72);
   font-size: 1.08rem;
+}
+
+.review-cards {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.review-card {
+  min-height: 156px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 20px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.54)),
+    var(--soft);
+  box-shadow: 0 18px 45px rgba(39, 32, 23, 0.08);
+}
+
+.review-card span {
+  display: block;
+  margin-bottom: 18px;
+  color: var(--blue);
+  font-size: 1.35rem;
+  font-weight: 860;
+}
+
+.review-card h3 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+}
+
+.review-card p {
+  margin: 0;
+  color: rgba(23, 20, 17, 0.66);
 }
 
 .tour {
@@ -505,6 +542,8 @@ a {
   border-radius: 8px;
   background: #111;
   box-shadow: 0 30px 90px rgba(39, 32, 23, 0.16);
+  cursor: pointer;
+  touch-action: pan-y;
 }
 
 .gallery-slide {
@@ -538,12 +577,16 @@ a {
   left: 22px;
   bottom: 20px;
   z-index: 2;
-  border-radius: 999px;
-  padding: 9px 14px;
+  max-width: min(760px, calc(100% - 44px));
+  overflow: hidden;
+  border-radius: 8px;
+  padding: 10px 14px;
   color: var(--white);
   background: rgba(0, 0, 0, 0.42);
   font-size: 0.86rem;
   font-weight: 780;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   backdrop-filter: blur(14px);
 }
 
@@ -567,6 +610,14 @@ a {
   font-size: 1.55rem;
   line-height: 1;
   cursor: pointer;
+  transition:
+    transform 180ms ease,
+    background 180ms ease;
+}
+
+.gallery-button:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.96);
 }
 
 .gallery-dots {
@@ -599,34 +650,31 @@ a {
 }
 
 .society-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  display: flex;
   gap: 16px;
   width: 100%;
   max-width: 1160px;
   margin: 0 auto;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  scroll-snap-type: x mandatory;
 }
 
 .society-card {
+  width: min(370px, 34vw);
+  min-width: min(370px, 34vw);
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.76);
   box-shadow: 0 18px 45px rgba(39, 32, 23, 0.08);
-}
-
-.society-card-large {
-  grid-column: span 2;
+  scroll-snap-align: start;
 }
 
 .society-card img {
   width: 100%;
-  aspect-ratio: 16 / 11;
-  object-fit: cover;
-}
-
-.society-card-large img {
   aspect-ratio: 16 / 10;
+  object-fit: cover;
 }
 
 .society-card div {
@@ -725,6 +773,10 @@ a {
     padding-bottom: 72px;
   }
 
+  .review-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .intro-band h2,
   .details h2,
   .book h2 {
@@ -759,13 +811,9 @@ a {
     font-size: 2.35rem;
   }
 
-  .society-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px;
-  }
-
-  .society-card-large {
-    grid-column: span 2;
+  .society-card {
+    width: min(340px, 42vw);
+    min-width: min(340px, 42vw);
   }
 
   .book-content {
@@ -802,7 +850,7 @@ a {
 
   .hero-copy,
   .tour-step p:last-child,
-  .intro-band p:last-child,
+  .intro-band > p,
   .book-content p:not(.section-kicker) {
     font-size: 1rem;
   }
@@ -820,11 +868,34 @@ a {
   .tour-step {
     min-height: 104svh;
     justify-content: end;
-    padding-bottom: 122px;
+    opacity: 0;
+    padding-bottom: 108px;
+  }
+
+  .tour-step.is-active {
+    opacity: 1;
   }
 
   .tour-step h2 {
-    font-size: 2.1rem;
+    max-width: 96%;
+    color: rgba(255, 255, 255, 0.98);
+    font-size: 1.92rem;
+    line-height: 1.03;
+    text-shadow: 0 3px 24px rgba(0, 0, 0, 0.8);
+  }
+
+  .tour-step p:last-child {
+    max-width: 94%;
+    margin-top: 14px;
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 0.98rem;
+    line-height: 1.48;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.82);
+  }
+
+  .tour-step .section-kicker {
+    color: #ffd24a;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.7);
   }
 
   .stage-backdrop {
@@ -854,7 +925,7 @@ a {
 
   .stage-shade {
     background:
-      linear-gradient(0deg, rgba(0, 0, 0, 0.84), rgba(0, 0, 0, 0.52) 34%, rgba(0, 0, 0, 0.08) 64%, rgba(0, 0, 0, 0.42)),
+      linear-gradient(0deg, rgba(0, 0, 0, 0.88), rgba(0, 0, 0, 0.58) 38%, rgba(0, 0, 0, 0.1) 66%, rgba(0, 0, 0, 0.46)),
       linear-gradient(90deg, rgba(0, 0, 0, 0.36), transparent 52%, rgba(0, 0, 0, 0.26));
   }
 
@@ -878,6 +949,8 @@ a {
   .gallery-slide figcaption {
     left: 14px;
     bottom: 14px;
+    max-width: calc(100% - 28px);
+    font-size: 0.78rem;
   }
 
   .gallery-controls {
@@ -897,16 +970,21 @@ a {
     scroll-snap-type: x mandatory;
   }
 
-  .society-card,
-  .society-card-large {
+  .society-card {
     width: 78vw;
     min-width: 78vw;
-    scroll-snap-align: start;
   }
 
-  .society-card img,
-  .society-card-large img {
+  .society-card img {
     aspect-ratio: 16 / 10;
+  }
+
+  .review-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .review-card {
+    min-height: 132px;
   }
 
   .book {

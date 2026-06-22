@@ -189,11 +189,15 @@ const galleries = Array.from(document.querySelectorAll("[data-gallery]"));
 
 for (const gallery of galleries) {
   const slides = Array.from(gallery.querySelectorAll(".gallery-slide"));
+  const track = gallery.querySelector(".gallery-track");
   const dotsHost = gallery.querySelector(".gallery-dots");
   const prevButton = gallery.querySelector("[data-gallery-prev]");
   const nextButton = gallery.querySelector("[data-gallery-next]");
   let currentIndex = 0;
   let autoTimer = 0;
+  let pointerStartX = 0;
+  let pointerStartY = 0;
+  let pointerMoved = false;
 
   if (!slides.length || !dotsHost) {
     continue;
@@ -243,6 +247,35 @@ for (const gallery of galleries) {
   nextButton?.addEventListener("click", () => {
     showSlide(currentIndex + 1);
     restartAuto();
+  });
+
+  track?.addEventListener("pointerdown", (event) => {
+    pointerStartX = event.clientX;
+    pointerStartY = event.clientY;
+    pointerMoved = false;
+    track.setPointerCapture?.(event.pointerId);
+  });
+
+  track?.addEventListener("pointermove", (event) => {
+    if (Math.abs(event.clientX - pointerStartX) > 8 || Math.abs(event.clientY - pointerStartY) > 8) {
+      pointerMoved = true;
+    }
+  });
+
+  track?.addEventListener("pointerup", (event) => {
+    const deltaX = event.clientX - pointerStartX;
+    const deltaY = event.clientY - pointerStartY;
+
+    if (Math.abs(deltaX) > 42 && Math.abs(deltaX) > Math.abs(deltaY)) {
+      showSlide(currentIndex + (deltaX < 0 ? 1 : -1));
+      restartAuto();
+      return;
+    }
+
+    if (!pointerMoved) {
+      showSlide(currentIndex + 1);
+      restartAuto();
+    }
   });
 
   showSlide(0);
