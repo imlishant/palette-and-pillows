@@ -54,8 +54,8 @@ function updateStageMedia(step) {
   const nextPoster = step.dataset.poster || step.dataset.image || "";
   const nextImage = step.dataset.image || nextPoster;
 
-  if (tourBackdrop && nextPoster && tourBackdrop.getAttribute("src") !== nextPoster) {
-    tourBackdrop.src = nextPoster;
+  if (tourBackdrop && nextImage && tourBackdrop.getAttribute("src") !== nextImage) {
+    tourBackdrop.src = nextImage;
   }
 
   if (tourVideo) {
@@ -123,17 +123,29 @@ function setActive(step) {
 }
 
 function updateActiveStep() {
-  const viewportTarget = window.innerHeight * 0.56;
+  const keepTop = window.innerHeight * 0.44;
+  const keepBottom = window.innerHeight * 0.82;
+
+  if (activeStep) {
+    const activeRect = activeStep.getBoundingClientRect();
+    if (activeRect.top < keepBottom && activeRect.bottom > keepTop) {
+      ticking = false;
+      playVideo();
+      return;
+    }
+  }
+
   let bestStep = activeStep || tourSteps[0];
-  let bestDistance = Number.POSITIVE_INFINITY;
+  let bestOverlap = 0;
 
   for (const step of tourSteps) {
     const rect = step.getBoundingClientRect();
-    const center = rect.top + rect.height * 0.5;
-    const distance = Math.abs(center - viewportTarget);
+    const overlapTop = Math.max(rect.top, keepTop);
+    const overlapBottom = Math.min(rect.bottom, keepBottom);
+    const overlap = Math.max(0, overlapBottom - overlapTop);
 
-    if (distance < bestDistance) {
-      bestDistance = distance;
+    if (overlap > bestOverlap) {
+      bestOverlap = overlap;
       bestStep = step;
     }
   }
@@ -172,3 +184,67 @@ document.addEventListener("visibilitychange", () => {
     playVideo();
   }
 });
+
+const galleries = Array.from(document.querySelectorAll("[data-gallery]"));
+
+for (const gallery of galleries) {
+  const slides = Array.from(gallery.querySelectorAll(".gallery-slide"));
+  const dotsHost = gallery.querySelector(".gallery-dots");
+  const prevButton = gallery.querySelector("[data-gallery-prev]");
+  const nextButton = gallery.querySelector("[data-gallery-next]");
+  let currentIndex = 0;
+  let autoTimer = 0;
+
+  if (!slides.length || !dotsHost) {
+    continue;
+  }
+
+  const dots = slides.map((_, index) => {
+    const dot = document.createElement("button");
+    dot.type = "button";
+    dot.className = "gallery-dot";
+    dot.setAttribute("aria-label", `Show photo ${index + 1}`);
+    dot.addEventListener("click", () => {
+      showSlide(index);
+      restartAuto();
+    });
+    dotsHost.appendChild(dot);
+    return dot;
+  });
+
+  function showSlide(index) {
+    currentIndex = (index + slides.length) % slides.length;
+
+    slides.forEach((slide, slideIndex) => {
+      slide.classList.toggle("is-current", slideIndex === currentIndex);
+    });
+
+    dots.forEach((dot, dotIndex) => {
+      dot.classList.toggle("is-current", dotIndex === currentIndex);
+    });
+  }
+
+  function restartAuto() {
+    window.clearInterval(autoTimer);
+    if (reducedMotion.matches) {
+      return;
+    }
+
+    autoTimer = window.setInterval(() => {
+      showSlide(currentIndex + 1);
+    }, 4200);
+  }
+
+  prevButton?.addEventListener("click", () => {
+    showSlide(currentIndex - 1);
+    restartAuto();
+  });
+
+  nextButton?.addEventListener("click", () => {
+    showSlide(currentIndex + 1);
+    restartAuto();
+  });
+
+  showSlide(0);
+  restartAuto();
+}

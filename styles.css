@@ -295,17 +295,17 @@ a {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.44;
-  filter: blur(26px) saturate(1.08) contrast(1.06);
-  transform: scale(1.13);
+  opacity: 0.72;
+  filter: blur(10px) saturate(1.08) contrast(1.04);
+  transform: scale(1.06);
   transition:
     opacity 520ms ease,
     transform 920ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .tour-stage.is-changing .stage-backdrop img {
-  opacity: 0.22;
-  transform: scale(1.18);
+  opacity: 0.38;
+  transform: scale(1.1);
 }
 
 .stage-device {
@@ -344,9 +344,9 @@ a {
 .stage-shade {
   z-index: 1;
   background:
-    radial-gradient(circle at 75% 45%, rgba(255, 255, 255, 0.08), transparent 24%),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0.24) 52%, rgba(0, 0, 0, 0.58)),
-    linear-gradient(0deg, rgba(0, 0, 0, 0.75), transparent 40%, rgba(0, 0, 0, 0.36));
+    radial-gradient(circle at 75% 45%, rgba(255, 255, 255, 0.1), transparent 28%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.74), rgba(0, 0, 0, 0.38) 46%, rgba(0, 0, 0, 0.58)),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.72), transparent 48%, rgba(0, 0, 0, 0.34));
 }
 
 .stage-topline {
@@ -418,7 +418,7 @@ a {
   width: 100%;
   max-width: 1160px;
   margin: 0 auto;
-  padding: 100px 32px 84px;
+  padding: 96px 32px 58px;
 }
 
 .details-heading {
@@ -466,18 +466,21 @@ a {
   color: rgba(23, 20, 17, 0.68);
 }
 
-.media-library {
-  padding: 96px 32px;
+.flat-gallery,
+.society {
+  padding: 78px 32px;
   background: #f7f3eb;
 }
 
-.media-heading {
+.gallery-heading,
+.society-heading {
   width: 100%;
   max-width: 1160px;
   margin: 0 auto 34px;
 }
 
-.media-heading h2 {
+.gallery-heading h2,
+.society-heading h2 {
   max-width: 660px;
   margin: 0;
   font-family:
@@ -487,7 +490,115 @@ a {
   line-height: 0.98;
 }
 
-.media-grid {
+.gallery-shell {
+  position: relative;
+  width: 100%;
+  max-width: 1160px;
+  margin: 0 auto;
+}
+
+.gallery-track {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #111;
+  box-shadow: 0 30px 90px rgba(39, 32, 23, 0.16);
+}
+
+.gallery-slide {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  transform: scale(1.035);
+  transition:
+    opacity 560ms cubic-bezier(0.19, 1, 0.22, 1),
+    transform 1100ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.gallery-slide.is-current {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.gallery-slide picture,
+.gallery-slide img {
+  width: 100%;
+  height: 100%;
+}
+
+.gallery-slide img {
+  object-fit: cover;
+}
+
+.gallery-slide figcaption {
+  position: absolute;
+  left: 22px;
+  bottom: 20px;
+  z-index: 2;
+  border-radius: 999px;
+  padding: 9px 14px;
+  color: var(--white);
+  background: rgba(0, 0, 0, 0.42);
+  font-size: 0.86rem;
+  font-weight: 780;
+  backdrop-filter: blur(14px);
+}
+
+.gallery-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.gallery-button {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.74);
+  font-size: 1.55rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.gallery-dots {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.gallery-dot {
+  width: 8px;
+  height: 8px;
+  border: 0;
+  border-radius: 999px;
+  padding: 0;
+  background: rgba(23, 20, 17, 0.24);
+  cursor: pointer;
+  transition:
+    width 260ms ease,
+    background 260ms ease;
+}
+
+.gallery-dot.is-current {
+  width: 26px;
+  background: var(--ink);
+}
+
+.society {
+  padding-top: 22px;
+  padding-bottom: 72px;
+}
+
+.society-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
@@ -496,39 +607,44 @@ a {
   margin: 0 auto;
 }
 
-.media-card {
+.society-card {
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.76);
   box-shadow: 0 18px 45px rgba(39, 32, 23, 0.08);
 }
 
-.media-card video,
-.media-card img {
-  width: 100%;
-  aspect-ratio: 9 / 16;
-  object-fit: cover;
-  background: #090807;
-}
-
-.media-card-wide {
+.society-card-large {
   grid-column: span 2;
 }
 
-.media-card-wide img {
-  aspect-ratio: 16 / 9;
+.society-card img {
+  width: 100%;
+  aspect-ratio: 16 / 11;
+  object-fit: cover;
 }
 
-.media-card h3 {
+.society-card-large img {
+  aspect-ratio: 16 / 10;
+}
+
+.society-card div {
+  padding: 18px;
+}
+
+.society-card h3 {
+  margin: 0 0 8px;
+}
+
+.society-card p {
   margin: 0;
-  padding: 14px 14px 16px;
-  font-size: 0.96rem;
+  color: rgba(23, 20, 17, 0.68);
 }
 
 .book {
   position: relative;
-  min-height: 100svh;
+  min-height: 78svh;
   display: grid;
   align-items: end;
   overflow: hidden;
@@ -633,17 +749,23 @@ a {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .media-library {
-    padding: 72px 20px;
+  .flat-gallery,
+  .society {
+    padding: 64px 20px;
   }
 
-  .media-heading h2 {
+  .gallery-heading h2,
+  .society-heading h2 {
     font-size: 2.35rem;
   }
 
-  .media-grid {
+  .society-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 14px;
+  }
+
+  .society-card-large {
+    grid-column: span 2;
   }
 
   .book-content {
@@ -662,11 +784,8 @@ a {
   }
 
   .nav-links {
-    font-size: 0.82rem;
-  }
-
-  .nav-links a:nth-child(2) {
-    display: none;
+    gap: 10px;
+    font-size: 0.78rem;
   }
 
   .hero h1 {
@@ -752,7 +871,25 @@ a {
     padding: 22px;
   }
 
-  .media-grid {
+  .gallery-track {
+    aspect-ratio: 9 / 16;
+  }
+
+  .gallery-slide figcaption {
+    left: 14px;
+    bottom: 14px;
+  }
+
+  .gallery-controls {
+    gap: 10px;
+  }
+
+  .gallery-button {
+    width: 38px;
+    height: 38px;
+  }
+
+  .society-grid {
     display: flex;
     gap: 12px;
     overflow-x: auto;
@@ -760,24 +897,20 @@ a {
     scroll-snap-type: x mandatory;
   }
 
-  .media-card {
-    width: 68vw;
-    min-width: 68vw;
+  .society-card,
+  .society-card-large {
+    width: 78vw;
+    min-width: 78vw;
     scroll-snap-align: start;
   }
 
-  .media-card video,
-  .media-card img {
-    aspect-ratio: 9 / 16;
+  .society-card img,
+  .society-card-large img {
+    aspect-ratio: 16 / 10;
   }
 
-  .media-card-wide {
-    width: 78vw;
-    min-width: 78vw;
-  }
-
-  .media-card-wide img {
-    aspect-ratio: 16 / 9;
+  .book {
+    min-height: 82svh;
   }
 
   .book-content {
