@@ -9,12 +9,18 @@
       content="Palette & Pillows is an artistic 2BHK at Adora De Goa in Dabolim, Goa. Tour the stay and book directly through Airbnb."
     />
     <link rel="canonical" href="https://www.paletteandpillows.space/" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png" />
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
     <link rel="preload" as="image" href="assets/images/landscape/living-hero.jpg" />
+    <link rel="preload" as="video" href="assets/videos/entry.mp4" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <header class="site-header" aria-label="Primary navigation">
-      <a class="brand" href="#top">Palette &amp; Pillows</a>
+      <a class="brand" href="#top">
+        <img src="assets/icons/profile.jpg" alt="" />
+        <span>Palette &amp; Pillows</span>
+      </a>
       <nav class="nav-links" aria-label="Site navigation">
         <a href="#tour">Tour</a>
         <a href="#details">Details</a>
@@ -35,6 +41,17 @@
             alt="Bright living room at Palette & Pillows with colorful seating and wall art"
           />
         </picture>
+        <video
+          class="hero-image hero-video"
+          autoplay
+          muted
+          loop
+          playsinline
+          poster="assets/posters/entry.jpg"
+          aria-label="Entry video tour of Palette & Pillows"
+        >
+          <source src="assets/videos/entry.mp4" type="video/mp4" />
+        </video>
         <div class="hero-shade"></div>
         <div class="hero-content">
           <p class="eyebrow">Adora De Goa · Dabolim</p>
@@ -56,7 +73,7 @@
           </div>
         </div>
         <div class="hero-facts" aria-label="Listing summary">
-          <span>5 guests</span>
+          <span>4 + 1 guests</span>
           <span>2 bedrooms</span>
           <span>2 beds</span>
           <span>2 baths</span>
@@ -69,99 +86,120 @@
           <h2>A free-flowing stay that moves from room to room.</h2>
         </div>
         <p>
-          Start in the lounge, move into both bedrooms, pass the baths and
-          kitchen, step out to the balcony, then finish with the pool and shared
-          spaces that make the stay feel like Goa.
+          Start at the entry, step toward the balcony, pass through the drawing
+          room, then continue through the washroom, kitchen, wash area, both
+          bedrooms, and the attached bath.
         </p>
       </section>
 
-      <section class="tour" id="tour" aria-label="Guided photo tour">
+      <section class="tour" id="tour" aria-label="Guided video tour">
         <div class="tour-stage">
-          <img
-            id="tour-image"
-            src="assets/images/landscape/arrival-living.jpg"
-            alt="Living room view from the entry at Palette & Pillows"
-          />
+          <div class="stage-backdrop" aria-hidden="true">
+            <img id="tour-backdrop" src="assets/posters/entry.jpg" alt="" />
+          </div>
+          <div class="stage-device">
+            <video
+              id="tour-video"
+              autoplay
+              muted
+              loop
+              playsinline
+              preload="auto"
+              poster="assets/posters/entry.jpg"
+              aria-label="Entry walkthrough video"
+            >
+              <source src="assets/videos/entry.mp4" type="video/mp4" />
+            </video>
+            <img
+              id="tour-image"
+              src="assets/posters/entry.jpg"
+              alt="Entryway opening into the Palette & Pillows apartment"
+              hidden
+            />
+          </div>
           <div class="stage-shade"></div>
           <div class="stage-topline">
-            <span id="tour-count">01 / 08</span>
-            <span id="tour-label">The arrival</span>
+            <span id="tour-count">01 / 09</span>
+            <span id="tour-label">Entry</span>
           </div>
         </div>
 
         <div class="tour-copy">
           <article
             class="tour-step is-active"
-            data-label="The arrival"
-            data-count="01 / 08"
-            data-image="assets/images/landscape/arrival-living.jpg"
-            data-mobile="assets/images/portrait/arrival-entry.jpg"
-            data-alt="Entryway opening into the Palette & Pillows living room"
+            data-label="Entry"
+            data-count="01 / 09"
+            data-video="assets/videos/entry.mp4"
+            data-poster="assets/posters/entry.jpg"
+            data-image="assets/posters/entry.jpg"
+            data-alt="Entryway opening into the Palette & Pillows apartment"
           >
             <p class="section-kicker">Start here</p>
-            <h2>Arrive into colour, light, and a real place to settle in.</h2>
+            <h2>Step in from the door and the home opens ahead.</h2>
             <p>
-              The living room is the first pause point: a soft sofa, yellow
-              accent chair, art on the wall, and enough open space for a group
-              to breathe after a day out.
+              The walkthrough begins at the entry, with the living space,
+              balcony light, and apartment flow visible from the first step.
             </p>
           </article>
 
           <article
             class="tour-step"
-            data-label="Bedroom one"
-            data-count="02 / 08"
-            data-image="assets/images/landscape/sun-bedroom.jpg"
-            data-mobile="assets/images/portrait/sun-bedroom.jpg"
-            data-alt="Yellow and blue bedroom with a double bed and soft daylight"
+            data-label="Balcony"
+            data-count="02 / 09"
+            data-video="assets/videos/balcony.mp4"
+            data-poster="assets/posters/balcony.jpg"
+            data-image="assets/images/landscape/balcony.jpg"
+            data-alt="Balcony view from Palette & Pillows"
           >
-            <p class="section-kicker">Bedroom one</p>
-            <h2>The sunshine room keeps the morning bright.</h2>
+            <p class="section-kicker">Balcony</p>
+            <h2>A bright balcony pause before the room tour begins.</h2>
             <p>
-              Yellow bedding, deep blue curtains, framed art, wardrobe storage,
-              and a restful double bed make this room feel cheerful without
-              losing its calm.
+              Step out for morning air, utility access, and a quick look at the
+              colourful Adora De Goa buildings around the apartment.
             </p>
           </article>
 
           <article
             class="tour-step"
-            data-label="Bath one"
-            data-count="03 / 08"
-            data-image="assets/images/landscape/cream-bath.jpg"
-            data-mobile="assets/images/portrait/cream-bath.jpg"
-            data-alt="Cream toned bathroom with round mirror, vanity, and toilet"
+            data-label="Drawing room"
+            data-count="03 / 09"
+            data-video="assets/videos/drawing-room.mp4"
+            data-poster="assets/posters/drawing-room.jpg"
+            data-image="assets/images/landscape/living-hero.jpg"
+            data-alt="Drawing room with sofa, yellow chair, TV, and colourful rug"
           >
-            <p class="section-kicker">Bath one</p>
-            <h2>A clean private bath sits right where you need it.</h2>
+            <p class="section-kicker">Drawing room</p>
+            <h2>The lounge is the colourful centre of the stay.</h2>
             <p>
-              Soft neutral finishes, a round mirror, vanity storage, and clear
-              essentials keep the bedroom routine simple.
+              A sofa, accent chair, TV wall, soft rug, and framed details make
+              this the easy meeting point for coffee, films, and post-beach rest.
             </p>
           </article>
 
           <article
             class="tour-step"
-            data-label="Bedroom two"
-            data-count="04 / 08"
-            data-image="assets/images/landscape/coral-bedroom.jpg"
-            data-mobile="assets/images/portrait/coral-bedroom.jpg"
-            data-alt="Coral bedroom with daybed, pillows, hanging light, and warm decor"
+            data-label="Common washroom"
+            data-count="04 / 09"
+            data-video="assets/videos/common-washroom.mp4"
+            data-poster="assets/posters/common-washroom.jpg"
+            data-image="assets/images/landscape/stone-bath.jpg"
+            data-alt="Common washroom with grey finish and shower area"
           >
-            <p class="section-kicker">Bedroom two</p>
-            <h2>The coral room is playful, warm, and flexible.</h2>
+            <p class="section-kicker">Common washroom</p>
+            <h2>The shared bath is clean, direct, and easy to access.</h2>
             <p>
-              A sofa bed, long bench, mirror, warm wall light, and layered
-              pillows give the second room a relaxed studio energy.
+              This bathroom sits along the main flow of the apartment, keeping
+              group mornings and quick freshen-ups simple.
             </p>
           </article>
 
           <article
             class="tour-step"
             data-label="Kitchen"
-            data-count="05 / 08"
+            data-count="05 / 09"
+            data-video="assets/videos/kitchen.mp4"
+            data-poster="assets/posters/kitchen.jpg"
             data-image="assets/images/landscape/kitchen.jpg"
-            data-mobile="assets/images/portrait/kitchen.jpg"
             data-alt="Compact kitchen at Palette & Pillows with black counter and tiled backsplash"
           >
             <p class="section-kicker">Kitchen</p>
@@ -175,50 +213,69 @@
 
           <article
             class="tour-step"
-            data-label="Bath two"
-            data-count="06 / 08"
-            data-image="assets/images/landscape/stone-bath.jpg"
-            data-mobile="assets/images/portrait/stone-bath.jpg"
-            data-alt="Grey stone bathroom with sink, mirror, toilet, and shower area"
+            data-label="Wash area"
+            data-count="06 / 09"
+            data-video="assets/videos/washarea.mp4"
+            data-poster="assets/posters/washarea.jpg"
+            data-image="assets/posters/washarea.jpg"
+            data-alt="Wash area next to the kitchen"
           >
-            <p class="section-kicker">Bath two</p>
-            <h2>The second bath keeps groups moving easily.</h2>
+            <p class="section-kicker">Wash area</p>
+            <h2>The utility corner keeps longer stays practical.</h2>
             <p>
-              A separate shower area and clean grey finish make sharing the
-              apartment easier for families, friends, and workation stays.
+              A separate wash zone sits just off the kitchen, useful for luggage,
+              laundry, and keeping the main rooms uncluttered.
             </p>
           </article>
 
           <article
             class="tour-step"
-            data-label="Balcony"
-            data-count="07 / 08"
-            data-image="assets/images/landscape/balcony.jpg"
-            data-mobile="assets/images/portrait/balcony.jpg"
-            data-alt="Apartment balcony looking toward the colorful Adora De Goa buildings"
+            data-label="Bedroom two"
+            data-count="07 / 09"
+            data-video="assets/videos/bedroom-two.mp4"
+            data-poster="assets/posters/bedroom-two.jpg"
+            data-image="assets/images/landscape/coral-bedroom.jpg"
+            data-alt="Second bedroom with coral bedding and warm decor"
           >
-            <p class="section-kicker">Balcony</p>
-            <h2>A quick outdoor breath between plans.</h2>
+            <p class="section-kicker">Bedroom two</p>
+            <h2>The second bedroom is warm, playful, and flexible.</h2>
             <p>
-              Step out for fresh air, morning light, and the bright geometry of
-              Adora De Goa around you.
+              The coral-toned room adds a softer mood with a sofa bed, bench,
+              mirror, and layered cushions for the extra guest setup.
             </p>
           </article>
 
           <article
             class="tour-step"
-            data-label="Amenities"
-            data-count="08 / 08"
-            data-image="assets/images/landscape/pool.jpg"
-            data-mobile="assets/images/landscape/pool.jpg"
-            data-alt="Outdoor pool and colorful buildings at Adora De Goa"
+            data-label="Master bedroom"
+            data-count="08 / 09"
+            data-video="assets/videos/master-bedroom.mp4"
+            data-poster="assets/posters/master-bedroom.jpg"
+            data-image="assets/images/landscape/sun-bedroom.jpg"
+            data-alt="Master bedroom with yellow bedding and blue curtains"
           >
-            <p class="section-kicker">Around the stay</p>
-            <h2>Pool, gym, games, and a base close to Goa’s good bits.</h2>
+            <p class="section-kicker">Master bedroom</p>
+            <h2>The master room stays bright, calm, and tucked away.</h2>
             <p>
-              The building adds the holiday layer: pool access, indoor play
-              spaces, fitness areas, and the convenience of Dabolim between
-              beach runs, cafes, and nightlife.
+              Yellow bedding, blue curtains, wardrobe storage, and attached bath
+              access make this the quieter room to settle into.
+            </p>
+          </article>
+
+          <article
+            class="tour-step"
+            data-label="Attached washroom"
+            data-count="09 / 09"
+            data-video="assets/videos/attached-washroom.mp4"
+            data-poster="assets/posters/attached-washroom.jpg"
+            data-image="assets/images/landscape/cream-bath.jpg"
+            data-alt="Attached washroom with vanity, round mirror, and toilet"
+          >
+            <p class="section-kicker">Attached washroom</p>
+            <h2>The attached bath finishes the private room loop.</h2>
+            <p>
+              A vanity, mirror, toilet, and simple essentials complete the
+              master bedroom side of the apartment.
             </p>
           </article>
         </div>
@@ -257,13 +314,79 @@
         </div>
       </section>
 
-      <section class="gallery-strip" aria-label="More moments from the stay">
-        <img src="assets/images/thumbs/living-tv.jpg" alt="Living room with TV console" loading="lazy" />
-        <img src="assets/images/thumbs/coral-detail.jpg" alt="Coral bedroom pillows and window light" loading="lazy" />
-        <img src="assets/images/thumbs/kitchen-wide.jpg" alt="Kitchen view from the hallway" loading="lazy" />
-        <img src="assets/images/thumbs/kids-lounge.jpg" alt="Colorful indoor lounge area at Adora De Goa" loading="lazy" />
-        <img src="assets/images/thumbs/gym.jpg" alt="Building fitness room" loading="lazy" />
-        <img src="assets/images/thumbs/changing-room.jpg" alt="Changing room and lockers" loading="lazy" />
+      <section class="media-library" aria-labelledby="media-title">
+        <div class="media-heading">
+          <p class="section-kicker">Open the tour</p>
+          <h2 id="media-title">Every room, available to watch on its own.</h2>
+        </div>
+        <div class="media-grid">
+          <article class="media-card">
+            <video controls muted playsinline preload="metadata" poster="assets/posters/entry.jpg">
+              <source src="assets/videos/entry.mp4" type="video/mp4" />
+            </video>
+            <h3>Entry</h3>
+          </article>
+          <article class="media-card">
+            <video controls muted playsinline preload="metadata" poster="assets/posters/balcony.jpg">
+              <source src="assets/videos/balcony.mp4" type="video/mp4" />
+            </video>
+            <h3>Balcony</h3>
+          </article>
+          <article class="media-card">
+            <video controls muted playsinline preload="metadata" poster="assets/posters/drawing-room.jpg">
+              <source src="assets/videos/drawing-room.mp4" type="video/mp4" />
+            </video>
+            <h3>Drawing room</h3>
+          </article>
+          <article class="media-card">
+            <video controls muted playsinline preload="metadata" poster="assets/posters/common-washroom.jpg">
+              <source src="assets/videos/common-washroom.mp4" type="video/mp4" />
+            </video>
+            <h3>Common washroom</h3>
+          </article>
+          <article class="media-card">
+            <video controls muted playsinline preload="metadata" poster="assets/posters/kitchen.jpg">
+              <source src="assets/videos/kitchen.mp4" type="video/mp4" />
+            </video>
+            <h3>Kitchen</h3>
+          </article>
+          <article class="media-card">
+            <video controls muted playsinline preload="metadata" poster="assets/posters/washarea.jpg">
+              <source src="assets/videos/washarea.mp4" type="video/mp4" />
+            </video>
+            <h3>Wash area</h3>
+          </article>
+          <article class="media-card">
+            <video controls muted playsinline preload="metadata" poster="assets/posters/bedroom-two.jpg">
+              <source src="assets/videos/bedroom-two.mp4" type="video/mp4" />
+            </video>
+            <h3>Bedroom two</h3>
+          </article>
+          <article class="media-card">
+            <video controls muted playsinline preload="metadata" poster="assets/posters/master-bedroom.jpg">
+              <source src="assets/videos/master-bedroom.mp4" type="video/mp4" />
+            </video>
+            <h3>Master bedroom</h3>
+          </article>
+          <article class="media-card">
+            <video controls muted playsinline preload="metadata" poster="assets/posters/attached-washroom.jpg">
+              <source src="assets/videos/attached-washroom.mp4" type="video/mp4" />
+            </video>
+            <h3>Attached washroom</h3>
+          </article>
+          <article class="media-card media-card-wide">
+            <img src="assets/images/landscape/pool.jpg" alt="Outdoor pool at Adora De Goa" loading="lazy" />
+            <h3>Pool</h3>
+          </article>
+          <article class="media-card media-card-wide">
+            <img src="assets/images/landscape/gym.jpg" alt="Fitness room at Adora De Goa" loading="lazy" />
+            <h3>Gym</h3>
+          </article>
+          <article class="media-card media-card-wide">
+            <img src="assets/images/landscape/games.jpg" alt="Indoor games room at Adora De Goa" loading="lazy" />
+            <h3>Games room</h3>
+          </article>
+        </div>
       </section>
 
       <section class="book" id="book" aria-labelledby="book-title">
@@ -297,11 +420,6 @@
         </div>
       </section>
     </main>
-
-    <footer class="site-footer">
-      <p>Palette &amp; Pillows · Artistic 2BHK at Adora De Goa</p>
-      <a href="https://www.paletteandpillows.space/">paletteandpillows.space</a>
-    </footer>
 
     <script src="script.js" defer></script>
   </body>
