@@ -218,11 +218,15 @@ for (const gallery of galleries) {
     currentIndex = (index + slides.length) % slides.length;
 
     slides.forEach((slide, slideIndex) => {
-      slide.classList.toggle("is-current", slideIndex === currentIndex);
+      const isCurrent = slideIndex === currentIndex;
+      slide.classList.toggle("is-current", isCurrent);
+      slide.setAttribute("aria-hidden", isCurrent ? "false" : "true");
     });
 
     dots.forEach((dot, dotIndex) => {
-      dot.classList.toggle("is-current", dotIndex === currentIndex);
+      const isCurrent = dotIndex === currentIndex;
+      dot.classList.toggle("is-current", isCurrent);
+      dot.setAttribute("aria-current", isCurrent ? "true" : "false");
     });
   }
 
@@ -268,4 +272,93 @@ for (const gallery of galleries) {
 
   showSlide(0);
   restartAuto();
+}
+
+const reviewCarousels = Array.from(document.querySelectorAll("[data-review-carousel]"));
+
+for (const carousel of reviewCarousels) {
+  const slides = Array.from(carousel.querySelectorAll(".review-card"));
+  const track = carousel.querySelector(".review-track");
+  const dotsHost = carousel.querySelector(".review-dots");
+  let currentIndex = 0;
+  let autoTimer = 0;
+  let pointerStartX = 0;
+  let pointerStartY = 0;
+  let pointerMoved = false;
+
+  if (!slides.length || !dotsHost) {
+    continue;
+  }
+
+  const dots = slides.map((_, index) => {
+    const dot = document.createElement("button");
+    dot.type = "button";
+    dot.className = "review-dot";
+    dot.setAttribute("aria-label", `Show guest review ${index + 1}`);
+    dot.addEventListener("click", () => {
+      showReview(index);
+      restartReviewAuto();
+    });
+    dotsHost.appendChild(dot);
+    return dot;
+  });
+
+  function showReview(index) {
+    currentIndex = (index + slides.length) % slides.length;
+
+    slides.forEach((slide, slideIndex) => {
+      const isCurrent = slideIndex === currentIndex;
+      slide.classList.toggle("is-current", isCurrent);
+      slide.setAttribute("aria-hidden", isCurrent ? "false" : "true");
+    });
+
+    dots.forEach((dot, dotIndex) => {
+      const isCurrent = dotIndex === currentIndex;
+      dot.classList.toggle("is-current", isCurrent);
+      dot.setAttribute("aria-current", isCurrent ? "true" : "false");
+    });
+  }
+
+  function restartReviewAuto() {
+    window.clearInterval(autoTimer);
+    if (reducedMotion.matches) {
+      return;
+    }
+
+    autoTimer = window.setInterval(() => {
+      showReview(currentIndex + 1);
+    }, 5600);
+  }
+
+  track?.addEventListener("pointerdown", (event) => {
+    pointerStartX = event.clientX;
+    pointerStartY = event.clientY;
+    pointerMoved = false;
+    track.setPointerCapture?.(event.pointerId);
+  });
+
+  track?.addEventListener("pointermove", (event) => {
+    if (Math.abs(event.clientX - pointerStartX) > 8 || Math.abs(event.clientY - pointerStartY) > 8) {
+      pointerMoved = true;
+    }
+  });
+
+  track?.addEventListener("pointerup", (event) => {
+    const deltaX = event.clientX - pointerStartX;
+    const deltaY = event.clientY - pointerStartY;
+
+    if (Math.abs(deltaX) > 42 && Math.abs(deltaX) > Math.abs(deltaY)) {
+      showReview(currentIndex + (deltaX < 0 ? 1 : -1));
+      restartReviewAuto();
+      return;
+    }
+
+    if (!pointerMoved) {
+      showReview(currentIndex + 1);
+      restartReviewAuto();
+    }
+  });
+
+  showReview(0);
+  restartReviewAuto();
 }
