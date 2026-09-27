@@ -2,24 +2,70 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Palette & Pillows | Artistic 2BHK in Goa</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Palette &amp; Pillows | Artistic 2BHK in Goa</title>
     <meta
       name="description"
-      content="Palette & Pillows is an artistic 2BHK at Adora De Goa in Dabolim, Goa. Tour the stay and book directly through Airbnb."
+      content="Palette &amp; Pillows is an artistic 2BHK at Adora De Goa in Dabolim, Goa. Rated 4.96 on Airbnb. Tour the stay and book directly."
     />
+    <meta name="theme-color" content="#171411" />
     <link rel="canonical" href="https://www.paletteandpillows.space/" />
+
+    <!-- Social share -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Palette &amp; Pillows" />
+    <meta property="og:title" content="Palette &amp; Pillows | Artistic 2BHK in Goa" />
+    <meta
+      property="og:description"
+      content="An artistic 2BHK at Adora De Goa, Dabolim. Pool access, self check-in. Rated 4.96 on Airbnb."
+    />
+    <meta property="og:url" content="https://www.paletteandpillows.space/" />
+    <meta property="og:image" content="https://www.paletteandpillows.space/assets/social/share.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Bright living room at Palette &amp; Pillows with colourful seating and wall art" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Palette &amp; Pillows | Artistic 2BHK in Goa" />
+    <meta
+      name="twitter:description"
+      content="An artistic 2BHK at Adora De Goa, Dabolim. Pool access, self check-in. Rated 4.96 on Airbnb."
+    />
+    <meta name="twitter:image" content="https://www.paletteandpillows.space/assets/social/share.jpg" />
+
     <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png?v=3" />
     <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/favicon-192.png?v=3" />
     <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png?v=3" />
-    <link rel="preload" as="image" href="assets/images/landscape/living-hero.jpg" />
-    <link rel="preload" as="video" href="assets/videos/entry.mp4" />
+
+    <!--
+      Preload only what each viewport actually paints: the landscape hero on
+      desktop, the entry poster on mobile (where the hero is the video).
+    -->
+    <link
+      rel="preload"
+      as="image"
+      media="(min-width: 621px)"
+      href="assets/opt/images/landscape/living-hero-1280.webp"
+      type="image/webp"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      as="image"
+      media="(max-width: 620px)"
+      href="assets/posters/entry.jpg"
+      fetchpriority="high"
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header class="site-header" aria-label="Primary navigation">
+    <a class="skip-link" href="#tour">Skip to the tour</a>
+
+    <header class="site-header">
       <a class="brand" href="#top">
-        <img src="assets/icons/profile.jpg" alt="" />
+        <picture>
+          <source type="image/webp" srcset="assets/opt/profile-102.webp" />
+          <img src="assets/icons/profile.jpg" alt="" width="34" height="34" />
+        </picture>
         <span>Palette &amp; Pillows</span>
       </a>
       <nav class="nav-links" aria-label="Site navigation">
@@ -32,27 +78,39 @@
     <main id="top">
       <section class="hero" aria-labelledby="hero-title">
         <picture>
+          <!-- Mobile paints the entry poster; the video fades in over it. -->
+          <source type="image/webp" media="(max-width: 620px)" srcset="assets/opt/posters/entry-720.webp" />
+          <source media="(max-width: 620px)" srcset="assets/posters/entry.jpg" />
           <source
-            srcset="assets/images/portrait/living.jpg"
-            media="(max-width: 720px) and (orientation: portrait)"
+            type="image/webp"
+            srcset="
+              assets/opt/images/landscape/living-hero-640.webp   640w,
+              assets/opt/images/landscape/living-hero-1280.webp 1280w,
+              assets/opt/images/landscape/living-hero-2200.webp 2200w
+            "
+            sizes="100vw"
           />
           <img
             class="hero-image"
             src="assets/images/landscape/living-hero.jpg"
-            alt="Bright living room at Palette & Pillows with colorful seating and wall art"
+            alt="Bright living room at Palette &amp; Pillows with colourful seating and wall art"
+            width="2200"
+            height="1466"
+            fetchpriority="high"
           />
         </picture>
+        <!-- src is attached by script.js, and only on small screens. -->
         <video
           class="hero-image hero-video"
-          autoplay
+          data-hero-video="assets/videos/entry.mp4"
           muted
           loop
           playsinline
-          poster="assets/posters/entry.jpg"
-          aria-label="Entry video tour of Palette & Pillows"
-        >
-          <source src="assets/videos/entry.mp4" type="video/mp4" />
-        </video>
+          preload="none"
+          width="720"
+          height="1280"
+          aria-label="Entry video tour of Palette &amp; Pillows"
+        ></video>
         <div class="hero-shade"></div>
         <div class="hero-content">
           <p class="eyebrow">Adora De Goa · Dabolim</p>
@@ -64,42 +122,52 @@
             An artistic 2BHK stay in Goa, shaped for slow mornings, beach days,
             cafe hopping, and evenings that end comfortably back at home.
           </p>
-          <div class="hero-actions" aria-label="Booking links">
-            <a class="button button-primary" href="https://www.airbnb.co.in/rooms/1592711862243608834" target="_blank" rel="noreferrer">
+          <p class="hero-host">Hosted by Himani · Superhost</p>
+          <div class="hero-actions" role="group" aria-label="Booking links">
+            <a class="button button-primary" href="https://airbnb.co.in/h/palette-and-pillows" target="_blank" rel="noopener noreferrer">
               Book on Airbnb
             </a>
-            <a class="button button-secondary" href="https://www.instagram.com/palette_and_pillows/" target="_blank" rel="noreferrer">
+            <a class="button button-secondary" href="https://www.instagram.com/palette_and_pillows/" target="_blank" rel="noopener noreferrer">
               Instagram
             </a>
           </div>
         </div>
-        <div class="hero-facts" aria-label="Listing summary">
-          <span>4(+1) guests</span>
-          <span>2 bedrooms</span>
-          <span>2 beds</span>
-          <span>2 baths</span>
-        </div>
+        <ul class="hero-facts" aria-label="Listing summary">
+          <li>4(+1) guests</li>
+          <li>2 bedrooms</li>
+          <li>2 beds</li>
+          <li>2 baths</li>
+        </ul>
       </section>
 
-      <section class="intro-band" id="reviews" aria-label="Stay highlights">
+      <section class="intro-band" id="reviews" aria-labelledby="reviews-title">
         <div>
           <p class="section-kicker">Guest favourite · Superhost</p>
-          <h2>Airbnb guests already call it a favourite.</h2>
+          <h2 id="reviews-title">Airbnb guests already call it a favourite.</h2>
         </div>
         <p>
           Palette &amp; Pillows is a colourful, easy Goa base for guests who want
           comfort without a generic hotel feel: a bright 2BHK, practical
           amenities, self check-in, pool access, and the calm confidence of a
-          guest-favourite stay with a perfect 5-star Airbnb rating.
+          guest-favourite stay.
         </p>
-        <div class="review-showcase" data-review-carousel aria-label="Guest reviews">
+        <div class="review-showcase" data-review-carousel>
+          <!--
+            RATING: keep these two numbers in step with the live Airbnb listing,
+            and with the JSON-LD aggregateRating at the foot of this file.
+          -->
           <div class="review-summary">
-            <span class="rating-mark">5.0</span>
-            <h3>Perfect 5-star stay</h3>
-            <p>Guest Favourite on Airbnb, backed by real stays and real guest words.</p>
+            <span class="rating-mark">4.96</span>
+            <h3>Guest Favourite on Airbnb</h3>
+            <p>Rated 4.96 out of 5 across 27 guest reviews, backed by real stays and real guest words.</p>
           </div>
           <div class="review-carousel">
-            <div class="review-track">
+            <div
+              class="review-track"
+              role="group"
+              aria-roledescription="carousel"
+              aria-label="Guest reviews"
+            >
               <article class="review-card is-current">
                 <div class="review-stars" aria-label="5 out of 5 stars">★★★★★</div>
                 <blockquote>
@@ -139,7 +207,7 @@
                 <cite>Ibtisaam</cite>
               </article>
             </div>
-            <div class="review-dots" aria-label="Guest review position"></div>
+            <div class="review-dots" role="tablist" aria-label="Guest review position"></div>
           </div>
         </div>
       </section>
@@ -147,25 +215,44 @@
       <section class="tour" id="tour" aria-label="Guided video tour">
         <div class="tour-stage">
           <div class="stage-backdrop" aria-hidden="true">
-            <img id="tour-backdrop" src="assets/posters/entry.jpg" alt="" />
+            <img id="tour-backdrop" src="assets/posters/entry.jpg" alt="" width="720" height="1280" />
           </div>
           <div class="stage-device">
+            <!--
+              Two buffers, not one. The next clip loads into the idle element
+              while the current one keeps playing, then the two crossfade, so a
+              step change never drops to a black frame. No autoplay attribute
+              and no src: script.js attaches a clip once the tour is close.
+            -->
             <video
-              id="tour-video"
-              autoplay
+              class="stage-video is-active"
+              data-stage-video
               muted
               loop
               playsinline
-              preload="auto"
+              preload="none"
               poster="assets/posters/entry.jpg"
+              width="720"
+              height="1280"
               aria-label="Entry walkthrough video"
-            >
-              <source src="assets/videos/entry.mp4" type="video/mp4" />
-            </video>
+            ></video>
+            <video
+              class="stage-video"
+              data-stage-video
+              muted
+              loop
+              playsinline
+              preload="none"
+              width="720"
+              height="1280"
+              aria-hidden="true"
+            ></video>
             <img
               id="tour-image"
               src="assets/posters/entry.jpg"
-              alt="Entryway opening into the Palette & Pillows apartment"
+              alt="Entryway opening into the Palette &amp; Pillows apartment"
+              width="720"
+              height="1280"
               hidden
             />
           </div>
@@ -183,8 +270,8 @@
             data-count="01 / 09"
             data-video="assets/videos/entry.mp4"
             data-poster="assets/posters/entry.jpg"
-            data-image="assets/images/landscape/arrival-living.jpg"
-            data-alt="Entryway opening into the Palette & Pillows apartment"
+            data-image="assets/opt/images/landscape/arrival-living-1280.webp"
+            data-alt="Entryway opening into the Palette &amp; Pillows apartment"
           >
             <p class="section-kicker">Start here</p>
             <h2>The first step gives you the whole home’s rhythm.</h2>
@@ -201,8 +288,8 @@
             data-count="02 / 09"
             data-video="assets/videos/balcony.mp4"
             data-poster="assets/posters/balcony.jpg"
-            data-image="assets/images/landscape/lounge-detail.jpg"
-            data-alt="Balcony view from Palette & Pillows"
+            data-image="assets/opt/images/landscape/lounge-detail-1280.webp"
+            data-alt="Balcony view from Palette &amp; Pillows"
           >
             <p class="section-kicker">Balcony</p>
             <h2>A small outdoor pause with Goa’s colour outside.</h2>
@@ -218,7 +305,7 @@
             data-count="03 / 09"
             data-video="assets/videos/drawing-room.mp4"
             data-poster="assets/posters/drawing-room.jpg"
-            data-image="assets/images/landscape/living-hero.jpg"
+            data-image="assets/opt/images/landscape/living-hero-1280.webp"
             data-alt="Drawing room with sofa, yellow chair, TV, and colourful rug"
           >
             <p class="section-kicker">Drawing room</p>
@@ -236,7 +323,7 @@
             data-count="04 / 09"
             data-video="assets/videos/common-washroom.mp4"
             data-poster="assets/posters/common-washroom.jpg"
-            data-image="assets/images/landscape/stone-bath.jpg"
+            data-image="assets/opt/images/landscape/stone-bath-1280.webp"
             data-alt="Common washroom with grey finish and shower area"
           >
             <p class="section-kicker">Common washroom</p>
@@ -253,8 +340,8 @@
             data-count="05 / 09"
             data-video="assets/videos/kitchen.mp4"
             data-poster="assets/posters/kitchen.jpg"
-            data-image="assets/images/landscape/kitchen.jpg"
-            data-alt="Compact kitchen at Palette & Pillows with black counter and tiled backsplash"
+            data-image="assets/opt/images/landscape/kitchen-1280.webp"
+            data-alt="Compact kitchen at Palette &amp; Pillows with black counter and tiled backsplash"
           >
             <p class="section-kicker">Kitchen</p>
             <h2>A compact kitchen for breakfast, snacks, and late plans.</h2>
@@ -270,7 +357,7 @@
             data-count="06 / 09"
             data-video="assets/videos/washarea.mp4"
             data-poster="assets/posters/washarea.jpg"
-            data-image="assets/images/landscape/balcony.jpg"
+            data-image="assets/opt/images/landscape/balcony-1280.webp"
             data-alt="Wash area next to the kitchen"
           >
             <p class="section-kicker">Wash area</p>
@@ -287,7 +374,7 @@
             data-count="07 / 09"
             data-video="assets/videos/bedroom-two.mp4"
             data-poster="assets/posters/bedroom-two.jpg"
-            data-image="assets/images/landscape/coral-bedroom.jpg"
+            data-image="assets/opt/images/landscape/coral-bedroom-1280.webp"
             data-alt="Second bedroom with coral bedding and warm decor"
           >
             <p class="section-kicker">Bedroom</p>
@@ -305,7 +392,7 @@
             data-count="08 / 09"
             data-video="assets/videos/master-bedroom.mp4"
             data-poster="assets/posters/master-bedroom.jpg"
-            data-image="assets/images/landscape/sun-bedroom.jpg"
+            data-image="assets/opt/images/landscape/sun-bedroom-1280.webp"
             data-alt="Master bedroom with yellow bedding and blue curtains"
           >
             <p class="section-kicker">Master bedroom</p>
@@ -322,7 +409,7 @@
             data-count="09 / 09"
             data-video="assets/videos/attached-washroom.mp4"
             data-poster="assets/posters/attached-washroom.jpg"
-            data-image="assets/images/landscape/cream-bath.jpg"
+            data-image="assets/opt/images/landscape/cream-bath-1280.webp"
             data-alt="Attached washroom with vanity, round mirror, and toilet"
           >
             <p class="section-kicker">Attached washroom</p>
@@ -374,64 +461,87 @@
           <h2 id="gallery-title">A quiet look through the flat.</h2>
         </div>
         <div class="gallery-shell" data-gallery>
-          <div class="gallery-track">
+          <div
+            class="gallery-track"
+            role="group"
+            aria-roledescription="carousel"
+            aria-label="Photos inside the flat"
+          >
             <figure class="gallery-slide is-current">
               <picture>
-                <source srcset="assets/images/portrait/arrival-entry.jpg" media="(max-width: 720px)" />
-                <img src="assets/images/landscape/arrival-living.jpg" alt="Entry view opening into the living room" loading="lazy" />
+                <source type="image/webp" media="(max-width: 720px)" srcset="assets/opt/images/portrait/arrival-entry-640.webp 640w, assets/opt/images/portrait/arrival-entry-1080.webp 1080w, assets/opt/images/portrait/arrival-entry-1400.webp 1400w" sizes="100vw" />
+                <source media="(max-width: 720px)" srcset="assets/images/portrait/arrival-entry.jpg" />
+                <source type="image/webp" srcset="assets/opt/images/landscape/arrival-living-640.webp 640w, assets/opt/images/landscape/arrival-living-1280.webp 1280w, assets/opt/images/landscape/arrival-living-2200.webp 2200w" sizes="(max-width: 1200px) 100vw, 1160px" />
+                <img src="assets/images/landscape/arrival-living.jpg" alt="Entry view opening into the living room" width="2200" height="1466" loading="lazy" decoding="async" />
               </picture>
             </figure>
             <figure class="gallery-slide">
               <picture>
-                <source srcset="assets/images/portrait/living.jpg" media="(max-width: 720px)" />
-                <img src="assets/images/landscape/living-hero.jpg" alt="Living room with sofa, yellow chair, and TV wall" loading="lazy" />
+                <source type="image/webp" media="(max-width: 720px)" srcset="assets/opt/images/portrait/living-640.webp 640w, assets/opt/images/portrait/living-1080.webp 1080w, assets/opt/images/portrait/living-1400.webp 1400w" sizes="100vw" />
+                <source media="(max-width: 720px)" srcset="assets/images/portrait/living.jpg" />
+                <source type="image/webp" srcset="assets/opt/images/landscape/living-hero-640.webp 640w, assets/opt/images/landscape/living-hero-1280.webp 1280w, assets/opt/images/landscape/living-hero-2200.webp 2200w" sizes="(max-width: 1200px) 100vw, 1160px" />
+                <img src="assets/images/landscape/living-hero.jpg" alt="Living room with sofa, yellow chair, and TV wall" width="2200" height="1466" loading="lazy" decoding="async" />
               </picture>
             </figure>
             <figure class="gallery-slide">
               <picture>
-                <source srcset="assets/images/portrait/work-nook.jpg" media="(max-width: 720px)" />
-                <img src="assets/images/landscape/lounge-detail.jpg" alt="Living room seating details and decor" loading="lazy" />
+                <source type="image/webp" media="(max-width: 720px)" srcset="assets/opt/images/portrait/work-nook-640.webp 640w, assets/opt/images/portrait/work-nook-1080.webp 1080w, assets/opt/images/portrait/work-nook-1400.webp 1400w" sizes="100vw" />
+                <source media="(max-width: 720px)" srcset="assets/images/portrait/work-nook.jpg" />
+                <source type="image/webp" srcset="assets/opt/images/landscape/lounge-detail-640.webp 640w, assets/opt/images/landscape/lounge-detail-1280.webp 1280w, assets/opt/images/landscape/lounge-detail-2200.webp 2200w" sizes="(max-width: 1200px) 100vw, 1160px" />
+                <img src="assets/images/landscape/lounge-detail.jpg" alt="Living room seating details and decor" width="2200" height="1466" loading="lazy" decoding="async" />
               </picture>
             </figure>
             <figure class="gallery-slide">
               <picture>
-                <source srcset="assets/images/portrait/sun-bedroom.jpg" media="(max-width: 720px)" />
-                <img src="assets/images/landscape/sun-bedroom.jpg" alt="Master bedroom with yellow bedding and blue curtains" loading="lazy" />
+                <source type="image/webp" media="(max-width: 720px)" srcset="assets/opt/images/portrait/sun-bedroom-640.webp 640w, assets/opt/images/portrait/sun-bedroom-1080.webp 1080w, assets/opt/images/portrait/sun-bedroom-1400.webp 1400w" sizes="100vw" />
+                <source media="(max-width: 720px)" srcset="assets/images/portrait/sun-bedroom.jpg" />
+                <source type="image/webp" srcset="assets/opt/images/landscape/sun-bedroom-640.webp 640w, assets/opt/images/landscape/sun-bedroom-1280.webp 1280w, assets/opt/images/landscape/sun-bedroom-2200.webp 2200w" sizes="(max-width: 1200px) 100vw, 1160px" />
+                <img src="assets/images/landscape/sun-bedroom.jpg" alt="Master bedroom with yellow bedding and blue curtains" width="2200" height="1466" loading="lazy" decoding="async" />
               </picture>
             </figure>
             <figure class="gallery-slide">
               <picture>
-                <source srcset="assets/images/portrait/coral-bedroom.jpg" media="(max-width: 720px)" />
-                <img src="assets/images/landscape/coral-bedroom.jpg" alt="Bedroom with coral bedding and warm details" loading="lazy" />
+                <source type="image/webp" media="(max-width: 720px)" srcset="assets/opt/images/portrait/coral-bedroom-640.webp 640w, assets/opt/images/portrait/coral-bedroom-1080.webp 1080w, assets/opt/images/portrait/coral-bedroom-1400.webp 1400w" sizes="100vw" />
+                <source media="(max-width: 720px)" srcset="assets/images/portrait/coral-bedroom.jpg" />
+                <source type="image/webp" srcset="assets/opt/images/landscape/coral-bedroom-640.webp 640w, assets/opt/images/landscape/coral-bedroom-1280.webp 1280w, assets/opt/images/landscape/coral-bedroom-2200.webp 2200w" sizes="(max-width: 1200px) 100vw, 1160px" />
+                <img src="assets/images/landscape/coral-bedroom.jpg" alt="Bedroom with coral bedding and warm details" width="2200" height="1466" loading="lazy" decoding="async" />
               </picture>
             </figure>
             <figure class="gallery-slide">
               <picture>
-                <source srcset="assets/images/portrait/kitchen.jpg" media="(max-width: 720px)" />
-                <img src="assets/images/landscape/kitchen.jpg" alt="Compact kitchen with black counter and tiled backsplash" loading="lazy" />
+                <source type="image/webp" media="(max-width: 720px)" srcset="assets/opt/images/portrait/kitchen-640.webp 640w, assets/opt/images/portrait/kitchen-1080.webp 1080w, assets/opt/images/portrait/kitchen-1400.webp 1400w" sizes="100vw" />
+                <source media="(max-width: 720px)" srcset="assets/images/portrait/kitchen.jpg" />
+                <source type="image/webp" srcset="assets/opt/images/landscape/kitchen-640.webp 640w, assets/opt/images/landscape/kitchen-1280.webp 1280w, assets/opt/images/landscape/kitchen-2200.webp 2200w" sizes="(max-width: 1200px) 100vw, 1160px" />
+                <img src="assets/images/landscape/kitchen.jpg" alt="Compact kitchen with black counter and tiled backsplash" width="2200" height="1466" loading="lazy" decoding="async" />
               </picture>
             </figure>
             <figure class="gallery-slide">
               <picture>
-                <source srcset="assets/images/portrait/stone-bath.jpg" media="(max-width: 720px)" />
-                <img src="assets/images/landscape/stone-bath.jpg" alt="Common washroom with grey stone finish" loading="lazy" />
+                <source type="image/webp" media="(max-width: 720px)" srcset="assets/opt/images/portrait/stone-bath-640.webp 640w, assets/opt/images/portrait/stone-bath-1080.webp 1080w, assets/opt/images/portrait/stone-bath-1400.webp 1400w" sizes="100vw" />
+                <source media="(max-width: 720px)" srcset="assets/images/portrait/stone-bath.jpg" />
+                <source type="image/webp" srcset="assets/opt/images/landscape/stone-bath-640.webp 640w, assets/opt/images/landscape/stone-bath-1280.webp 1280w, assets/opt/images/landscape/stone-bath-2200.webp 2200w" sizes="(max-width: 1200px) 100vw, 1160px" />
+                <img src="assets/images/landscape/stone-bath.jpg" alt="Common washroom with grey stone finish" width="2200" height="1466" loading="lazy" decoding="async" />
               </picture>
             </figure>
             <figure class="gallery-slide">
               <picture>
-                <source srcset="assets/images/portrait/cream-bath.jpg" media="(max-width: 720px)" />
-                <img src="assets/images/landscape/cream-bath.jpg" alt="Attached washroom with round mirror and vanity" loading="lazy" />
+                <source type="image/webp" media="(max-width: 720px)" srcset="assets/opt/images/portrait/cream-bath-640.webp 640w, assets/opt/images/portrait/cream-bath-1080.webp 1080w, assets/opt/images/portrait/cream-bath-1400.webp 1400w" sizes="100vw" />
+                <source media="(max-width: 720px)" srcset="assets/images/portrait/cream-bath.jpg" />
+                <source type="image/webp" srcset="assets/opt/images/landscape/cream-bath-640.webp 640w, assets/opt/images/landscape/cream-bath-1280.webp 1280w, assets/opt/images/landscape/cream-bath-2200.webp 2200w" sizes="(max-width: 1200px) 100vw, 1160px" />
+                <img src="assets/images/landscape/cream-bath.jpg" alt="Attached washroom with round mirror and vanity" width="2200" height="1466" loading="lazy" decoding="async" />
               </picture>
             </figure>
             <figure class="gallery-slide">
               <picture>
-                <source srcset="assets/images/portrait/balcony.jpg" media="(max-width: 720px)" />
-                <img src="assets/images/landscape/balcony.jpg" alt="Apartment balcony with colourful building view" loading="lazy" />
+                <source type="image/webp" media="(max-width: 720px)" srcset="assets/opt/images/portrait/balcony-640.webp 640w, assets/opt/images/portrait/balcony-1080.webp 1080w, assets/opt/images/portrait/balcony-1400.webp 1400w" sizes="100vw" />
+                <source media="(max-width: 720px)" srcset="assets/images/portrait/balcony.jpg" />
+                <source type="image/webp" srcset="assets/opt/images/landscape/balcony-640.webp 640w, assets/opt/images/landscape/balcony-1280.webp 1280w, assets/opt/images/landscape/balcony-2200.webp 2200w" sizes="(max-width: 1200px) 100vw, 1160px" />
+                <img src="assets/images/landscape/balcony.jpg" alt="Apartment balcony with colourful building view" width="2200" height="1466" loading="lazy" decoding="async" />
               </picture>
             </figure>
           </div>
-          <div class="gallery-controls" aria-label="Flat photo controls">
-            <div class="gallery-dots" aria-label="Flat photo position"></div>
+          <div class="gallery-controls">
+            <div class="gallery-dots" role="tablist" aria-label="Flat photo position"></div>
           </div>
         </div>
       </section>
@@ -441,55 +551,72 @@
           <p class="section-kicker">Around Adora De Goa</p>
           <h2 id="society-title">Pool days, game nights, and space to move.</h2>
         </div>
-        <div class="society-grid">
-          <article class="society-card">
-            <img src="assets/images/landscape/pool.jpg" alt="Outdoor pool and colourful buildings at Adora De Goa" loading="lazy" />
+        <ul class="society-grid">
+          <li class="society-card">
+            <picture>
+              <source type="image/webp" srcset="assets/opt/images/landscape/pool-640.webp 640w, assets/opt/images/landscape/pool-1280.webp 1280w" sizes="(max-width: 620px) 78vw, (max-width: 900px) 42vw, 370px" />
+              <img src="assets/images/landscape/pool.jpg" alt="Outdoor pool and colourful buildings at Adora De Goa" width="2200" height="1466" loading="lazy" decoding="async" />
+            </picture>
             <div>
               <h3>Pool</h3>
               <p>A bright community pool for slower afternoons inside the property.</p>
             </div>
-          </article>
-          <article class="society-card">
-            <img src="assets/images/landscape/gym.jpg" alt="Fitness room at Adora De Goa" loading="lazy" />
+          </li>
+          <li class="society-card">
+            <picture>
+              <source type="image/webp" srcset="assets/opt/images/landscape/gym-640.webp 640w, assets/opt/images/landscape/gym-1280.webp 1280w" sizes="(max-width: 620px) 78vw, (max-width: 900px) 42vw, 370px" />
+              <img src="assets/images/landscape/gym.jpg" alt="Fitness room at Adora De Goa" width="2200" height="1466" loading="lazy" decoding="async" />
+            </picture>
             <div>
               <h3>Gym</h3>
               <p>Keep a light routine going between beach days.</p>
             </div>
-          </article>
-          <article class="society-card">
-            <img src="assets/images/landscape/games.jpg" alt="Indoor games room at Adora De Goa" loading="lazy" />
+          </li>
+          <li class="society-card">
+            <picture>
+              <source type="image/webp" srcset="assets/opt/images/landscape/games-640.webp 640w, assets/opt/images/landscape/games-1280.webp 1280w" sizes="(max-width: 620px) 78vw, (max-width: 900px) 42vw, 370px" />
+              <img src="assets/images/landscape/games.jpg" alt="Indoor games room at Adora De Goa" width="2200" height="1466" loading="lazy" decoding="async" />
+            </picture>
             <div>
               <h3>Games room</h3>
               <p>A casual indoor space for evenings with friends.</p>
             </div>
-          </article>
-          <article class="society-card">
-            <img src="assets/images/landscape/kids-lounge.jpg" alt="Colourful indoor lounge at Adora De Goa" loading="lazy" />
+          </li>
+          <li class="society-card">
+            <picture>
+              <source type="image/webp" srcset="assets/opt/images/landscape/kids-lounge-640.webp 640w, assets/opt/images/landscape/kids-lounge-1280.webp 1280w" sizes="(max-width: 620px) 78vw, (max-width: 900px) 42vw, 370px" />
+              <img src="assets/images/landscape/kids-lounge.jpg" alt="Colourful indoor lounge at Adora De Goa" width="2200" height="1466" loading="lazy" decoding="async" />
+            </picture>
             <div>
               <h3>Lounge</h3>
               <p>Colourful shared spaces across the society.</p>
             </div>
-          </article>
-          <article class="society-card">
-            <img src="assets/images/thumbs/changing-room.jpg" alt="Changing room and lockers at Adora De Goa" loading="lazy" />
+          </li>
+          <li class="society-card">
+            <picture>
+              <source type="image/webp" srcset="assets/opt/images/thumbs/changing-room-640.webp 640w" sizes="(max-width: 620px) 78vw, (max-width: 900px) 42vw, 370px" />
+              <img src="assets/images/thumbs/changing-room.jpg" alt="Changing room and lockers at Adora De Goa" width="640" height="426" loading="lazy" decoding="async" />
+            </picture>
             <div>
               <h3>Changing room</h3>
               <p>Useful facilities around the shared amenities.</p>
             </div>
-          </article>
-        </div>
+          </li>
+        </ul>
       </section>
 
       <section class="book" id="book" aria-labelledby="book-title">
         <picture>
-          <source
-            srcset="assets/images/portrait/work-nook.jpg"
-            media="(max-width: 720px) and (orientation: portrait)"
-          />
+          <source type="image/webp" media="(max-width: 720px)" srcset="assets/opt/images/portrait/work-nook-640.webp 640w, assets/opt/images/portrait/work-nook-1080.webp 1080w" sizes="100vw" />
+          <source media="(max-width: 720px)" srcset="assets/images/portrait/work-nook.jpg" />
+          <source type="image/webp" srcset="assets/opt/images/landscape/lounge-detail-1280.webp 1280w, assets/opt/images/landscape/lounge-detail-2200.webp 2200w" sizes="100vw" />
           <img
             src="assets/images/landscape/lounge-detail.jpg"
             alt="Close view of the living room seating and decor"
+            width="2200"
+            height="1466"
             loading="lazy"
+            decoding="async"
           />
         </picture>
         <div class="book-content">
@@ -500,17 +627,86 @@
             behind-the-scenes updates, styling notes, and quick questions, reach
             Palette &amp; Pillows on Instagram.
           </p>
-          <div class="hero-actions">
-            <a class="button button-primary" href="https://www.airbnb.co.in/rooms/1592711862243608834" target="_blank" rel="noreferrer">
+          <div class="hero-actions" role="group" aria-label="Booking links">
+            <a class="button button-primary" href="https://airbnb.co.in/h/palette-and-pillows" target="_blank" rel="noopener noreferrer">
               Open Airbnb
             </a>
-            <a class="button button-secondary light" href="https://www.instagram.com/palette_and_pillows/" target="_blank" rel="noreferrer">
+            <a class="button button-secondary light" href="https://www.instagram.com/palette_and_pillows/" target="_blank" rel="noopener noreferrer">
               Message on Instagram
             </a>
           </div>
         </div>
       </section>
     </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div>
+          <p class="footer-brand">Palette &amp; Pillows</p>
+          <p>Adora De Goa, Dabolim, Goa, India</p>
+          <p>Hosted by Himani · Superhost on Airbnb</p>
+        </div>
+        <div>
+          <p class="footer-heading">Find us</p>
+          <p>
+            <a href="https://airbnb.co.in/h/palette-and-pillows" target="_blank" rel="noopener noreferrer">Airbnb</a>
+          </p>
+          <p>
+            <a href="https://www.instagram.com/palette_and_pillows/" target="_blank" rel="noopener noreferrer">Instagram</a>
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Sticky booking bar, small screens only. Revealed once the hero scrolls away. -->
+    <div class="booking-bar" data-booking-bar>
+      <div class="booking-bar-meta">
+        <span class="booking-bar-rating">★ 4.96</span>
+        <span class="booking-bar-sub">27 reviews · Guest Favourite</span>
+      </div>
+      <a class="button button-primary" href="https://airbnb.co.in/h/palette-and-pillows" target="_blank" rel="noopener noreferrer">
+        Book on Airbnb
+      </a>
+    </div>
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "LodgingBusiness",
+        "name": "Palette & Pillows",
+        "description": "An artistic 2BHK stay at Adora De Goa in Dabolim, Goa, with pool access, self check-in, a dedicated workspace and free parking.",
+        "url": "https://www.paletteandpillows.space/",
+        "image": "https://www.paletteandpillows.space/assets/social/share.jpg",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Dabolim",
+          "addressRegion": "Goa",
+          "addressCountry": "IN"
+        },
+        "petsAllowed": false,
+        "numberOfRooms": 2,
+        "amenityFeature": [
+          { "@type": "LocationFeatureSpecification", "name": "Beach access", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Kitchen", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Wi-Fi", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Dedicated workspace", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Free parking", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Self check-in", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Pool", "value": true }
+        ],
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.96",
+          "reviewCount": "27",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
+        "sameAs": [
+          "https://airbnb.co.in/h/palette-and-pillows",
+          "https://www.instagram.com/palette_and_pillows/"
+        ]
+      }
+    </script>
 
     <script src="script.js" defer></script>
   </body>

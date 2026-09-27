@@ -1,5 +1,11 @@
 :root {
   color-scheme: light;
+  /* Tour geometry. --tour-steps is overwritten by script.js from the real
+     number of .tour-step articles, so adding a room cannot leave a gap of
+     dead scroll at the end of the section. */
+  --tour-steps: 9;
+  --tour-step-h: 108svh;
+  --header-h: 76px;
   --ink: #171411;
   --paper: #fbfaf7;
   --soft: #f2eee5;
@@ -17,6 +23,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: var(--header-h);
 }
 
 body {
@@ -28,14 +35,13 @@ body {
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
   line-height: 1.5;
-  letter-spacing: 0;
-  text-rendering: optimizeLegibility;
 }
 
 img,
 video {
   display: block;
   max-width: 100%;
+  height: auto;
 }
 
 a {
@@ -64,7 +70,7 @@ a {
   align-items: center;
   gap: 10px;
   font-size: 0.95rem;
-  font-weight: 760;
+  font-weight: 700;
 }
 
 .brand img {
@@ -81,7 +87,7 @@ a {
   align-items: center;
   gap: 18px;
   font-size: 0.88rem;
-  font-weight: 680;
+  font-weight: 600;
 }
 
 .nav-links a,
@@ -120,6 +126,12 @@ a {
 
 .hero-video {
   display: none;
+  opacity: 0;
+  transition: opacity 600ms ease;
+}
+
+.hero-video.is-playing {
+  opacity: 1;
 }
 
 .hero-shade {
@@ -142,7 +154,7 @@ a {
   margin: 0 0 12px;
   color: var(--saffron);
   font-size: 0.78rem;
-  font-weight: 820;
+  font-weight: 800;
   text-transform: uppercase;
 }
 
@@ -154,7 +166,7 @@ a {
   margin: 0;
   font-family:
     ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-  font-weight: 620;
+  font-weight: 600;
   line-height: 0.98;
   letter-spacing: 0;
 }
@@ -191,7 +203,7 @@ a {
   border-radius: 6px;
   padding: 12px 18px;
   font-size: 0.92rem;
-  font-weight: 780;
+  font-weight: 700;
   transition:
     transform 180ms ease,
     background 180ms ease,
@@ -220,6 +232,9 @@ a {
 }
 
 .hero-facts {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
   position: absolute;
   right: 32px;
   bottom: 32px;
@@ -236,14 +251,14 @@ a {
   backdrop-filter: blur(18px);
 }
 
-.hero-facts span {
+.hero-facts li {
   display: grid;
   min-height: 58px;
   place-items: center;
   padding: 10px;
   background: rgba(0, 0, 0, 0.16);
   font-size: 0.9rem;
-  font-weight: 740;
+  font-weight: 700;
   text-align: center;
 }
 
@@ -306,7 +321,7 @@ a {
   font-family:
     ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
   font-size: clamp(4rem, 8vw, 6.8rem);
-  font-weight: 620;
+  font-weight: 600;
   line-height: 0.82;
 }
 
@@ -327,7 +342,9 @@ a {
 
 .review-track {
   position: relative;
-  min-height: 286px;
+  /* Height is set by script.js to match the current card, so a short review
+     does not inherit the height of the longest one. */
+  min-height: 210px;
   overflow: hidden;
   cursor: pointer;
   touch-action: pan-y;
@@ -335,8 +352,11 @@ a {
 
 .review-card {
   position: absolute;
-  inset: 0;
-  min-height: 286px;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: auto;
+  min-height: 100%;
   opacity: 0;
   pointer-events: none;
   transform: translateX(24px) scale(0.985);
@@ -356,7 +376,7 @@ a {
   margin-bottom: 22px;
   color: var(--coral);
   font-size: 0.95rem;
-  font-weight: 860;
+  font-weight: 800;
   letter-spacing: 0;
 }
 
@@ -365,7 +385,7 @@ a {
   font-family:
     ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
   font-size: clamp(1.45rem, 2.3vw, 2.45rem);
-  font-weight: 620;
+  font-weight: 600;
   line-height: 1.08;
 }
 
@@ -375,7 +395,7 @@ a {
   color: rgba(23, 20, 17, 0.66);
   font-size: 0.95rem;
   font-style: normal;
-  font-weight: 780;
+  font-weight: 700;
 }
 
 .review-dots {
@@ -405,7 +425,7 @@ a {
 
 .tour {
   position: relative;
-  min-height: 1040svh;
+  min-height: calc(var(--tour-steps) * var(--tour-step-h) - 100svh);
   background: #090807;
 }
 
@@ -469,9 +489,20 @@ a {
   object-fit: cover;
 }
 
+/* Two stacked buffers that crossfade, so a clip change never shows black. */
+.stage-video {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 460ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stage-video.is-active {
+  opacity: 1;
+}
+
 .tour-stage.is-changing .stage-device {
-  opacity: 0.58;
-  transform: translateY(-48%) scale(0.985);
+  transform: translateY(-48%) scale(0.994);
 }
 
 .stage-shade {
@@ -492,7 +523,7 @@ a {
   align-items: center;
   color: rgba(255, 255, 255, 0.86);
   font-size: 0.82rem;
-  font-weight: 760;
+  font-weight: 700;
 }
 
 .stage-topline::before {
@@ -509,7 +540,7 @@ a {
 }
 
 .tour-step {
-  min-height: 108svh;
+  min-height: var(--tour-step-h);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -523,8 +554,7 @@ a {
     transform 420ms ease;
 }
 
-.tour-step:nth-child(odd),
-.tour-step:nth-child(even) {
+.tour-step {
   margin-left: 8vw;
   margin-right: auto;
 }
@@ -619,7 +649,7 @@ a {
   font-family:
     ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
   font-size: 3rem;
-  font-weight: 620;
+  font-weight: 600;
   line-height: 0.98;
 }
 
@@ -636,7 +666,7 @@ a {
   aspect-ratio: 16 / 9;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: #111;
+  background: var(--soft);
   box-shadow: 0 30px 90px rgba(39, 32, 23, 0.16);
   cursor: pointer;
   touch-action: pan-y;
@@ -705,6 +735,8 @@ a {
 }
 
 .society-grid {
+  list-style: none;
+  padding-left: 0;
   display: flex;
   gap: 16px;
   width: 100%;
@@ -836,9 +868,8 @@ a {
     min-height: 210px;
   }
 
-  .review-track,
-  .review-card {
-    min-height: 330px;
+  .review-track {
+    min-height: 200px;
   }
 
   .intro-band h2,
@@ -851,8 +882,7 @@ a {
     width: calc(100% - 40px);
   }
 
-  .tour-step:nth-child(odd),
-  .tour-step:nth-child(even) {
+  .tour-step {
     margin-left: 20px;
     margin-right: 20px;
   }
@@ -904,10 +934,6 @@ a {
     font-size: 3rem;
   }
 
-  .hero picture {
-    display: none;
-  }
-
   .hero-video {
     display: block;
   }
@@ -939,11 +965,16 @@ a {
     width: 40px;
   }
 
+  :root {
+    --tour-step-h: 104svh;
+    --header-h: 64px;
+  }
+
   .tour-step {
-    min-height: 104svh;
     justify-content: end;
     opacity: 0;
-    padding-bottom: 108px;
+    /* Clears the sticky booking bar. */
+    padding-bottom: 152px;
   }
 
   .tour-step.is-active {
@@ -989,7 +1020,7 @@ a {
   }
 
   .tour-stage.is-changing .stage-device {
-    transform: scale(1.015);
+    transform: scale(1.006);
   }
 
   .stage-device video,
@@ -1021,11 +1052,7 @@ a {
   }
 
   .society-grid {
-    display: flex;
     gap: 12px;
-    overflow-x: auto;
-    padding-bottom: 8px;
-    scroll-snap-type: x mandatory;
   }
 
   .society-card {
@@ -1037,9 +1064,8 @@ a {
     aspect-ratio: 16 / 10;
   }
 
-  .review-track,
-  .review-card {
-    min-height: 390px;
+  .review-track {
+    min-height: 190px;
   }
 
   .review-card {
@@ -1047,7 +1073,8 @@ a {
   }
 
   .review-card blockquote {
-    font-size: 1.5rem;
+    font-size: 1.28rem;
+    line-height: 1.18;
   }
 
   .review-summary {
@@ -1079,5 +1106,193 @@ a {
     transition-duration: 1ms !important;
     animation-duration: 1ms !important;
     animation-iteration-count: 1 !important;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Skip link
+ * ------------------------------------------------------------------ */
+
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 16px;
+  z-index: 60;
+  padding: 12px 18px;
+  border-radius: 0 0 8px 8px;
+  background: var(--ink);
+  color: var(--white);
+  font-size: 0.9rem;
+  font-weight: 700;
+  transition: top 160ms ease;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* ------------------------------------------------------------------ *
+ * Visible focus, for keyboard use
+ * ------------------------------------------------------------------ */
+
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid var(--saffron);
+  outline-offset: 3px;
+}
+
+/* ------------------------------------------------------------------ *
+ * Host line in the hero
+ * ------------------------------------------------------------------ */
+
+.hero-host {
+  margin: 14px 0 0;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+/* ------------------------------------------------------------------ *
+ * Sticky booking bar (small screens only)
+ * ------------------------------------------------------------------ */
+
+.booking-bar {
+  display: none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 30;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(23, 20, 17, 0.92);
+  backdrop-filter: blur(18px);
+  color: var(--white);
+  /* Hidden until the hero scrolls away. */
+  transform: translateY(110%);
+  transition: transform 320ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.booking-bar.is-visible {
+  transform: translateY(0);
+}
+
+.booking-bar-meta {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.booking-bar-rating {
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.booking-bar-sub {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.booking-bar .button {
+  min-height: 48px;
+  padding: 12px 22px;
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------------ *
+ * Footer
+ * ------------------------------------------------------------------ */
+
+.site-footer {
+  padding: 56px 32px 64px;
+  background: var(--ink);
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.92rem;
+}
+
+.footer-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: 28px 42px;
+  width: 100%;
+  max-width: 1160px;
+  margin: 0 auto;
+}
+
+.site-footer p {
+  margin: 0 0 6px;
+}
+
+.footer-brand {
+  color: var(--white);
+  font-family:
+    ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+.footer-heading {
+  color: var(--white);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.site-footer a {
+  color: var(--white);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ------------------------------------------------------------------ *
+ * Small screens
+ * ------------------------------------------------------------------ */
+
+@media (max-width: 900px) {
+  .site-footer {
+    padding: 48px 20px 56px;
+  }
+}
+
+@media (max-width: 620px) {
+  .booking-bar {
+    display: flex;
+  }
+
+  /* 44px minimum tap target without changing the visual weight. */
+  .nav-links {
+    gap: 2px;
+  }
+
+  .nav-links a {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    padding: 0 10px;
+  }
+
+  .brand {
+    min-height: 44px;
+  }
+
+  .footer-inner {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  /* The booking bar overlaps the foot of the page. */
+  .site-footer {
+    padding-bottom: calc(96px + env(safe-area-inset-bottom));
+  }
+}
+
+/* A visitor who wants less motion should not get a video fading in either. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-video {
+    display: none !important;
   }
 }
