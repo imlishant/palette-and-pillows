@@ -41,3 +41,47 @@ For the `www` domain:
 | CNAME | www | `<your-github-username>.github.io` |
 
 GitHub Pages will redirect between the root domain and `www` once both are configured.
+
+## Working on the site
+
+No build step. GitHub Pages serves these files exactly as they are, so editing
+`index.html`, `styles.css` or `script.js` and pushing is the whole workflow.
+
+```sh
+npm run serve    # http://localhost:8000
+npm test         # jest, jsdom
+```
+
+### Media
+
+Optimised media is generated once and committed; it is not built on deploy.
+
+```sh
+npm run optimize            # images only
+python3 tools/optimize-media.py --force
+```
+
+- WebP variants land in `assets/opt/` and are referenced from `index.html` as a
+  `<source type="image/webp">` ahead of the original JPEG, which stays as the
+  fallback. Never delete the JPEGs.
+- **Videos are shipped as supplied and are not re-encoded.** The source clips
+  already carry `faststart`, so playback begins before the file finishes
+  downloading without any processing. Re-encoding them only trades picture
+  quality for bytes, and since the tour loads clips on demand no video is
+  fetched on first paint anyway. The script can still do it behind an explicit
+  `--videos` flag; there is no reason to use it.
+- Requires Pillow (`pip install Pillow`); `ffmpeg` only for the optional
+  `--videos` path.
+
+### After adding a room to the tour
+
+Add the `<article class="tour-step">` with its `data-*` attributes and update the
+`data-count` values. The section height follows the step count automatically, so
+nothing in `styles.css` needs touching.
+
+### Keeping the rating honest
+
+The rating appears in three places that must agree with the live Airbnb listing:
+the `.rating-mark` and its supporting copy, the sticky booking bar, and the
+JSON-LD `aggregateRating` at the foot of `index.html`. Search for `4.96` to find
+all of them.
