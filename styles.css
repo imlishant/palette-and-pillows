@@ -1308,6 +1308,14 @@ button:focus-visible {
   font-weight: 600;
 }
 
+.footer-voice {
+  margin-top: 14px;
+  color: rgba(255, 255, 255, 0.9);
+  font-family:
+    ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  font-size: 1.05rem;
+}
+
 .footer-heading {
   color: var(--white);
   font-size: 0.78rem;
