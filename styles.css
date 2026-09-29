@@ -3,6 +3,18 @@
   /* Tour geometry. --tour-steps is overwritten by script.js from the real
      number of .tour-step articles, so adding a room cannot leave a gap of
      dead scroll at the end of the section. */
+  /* Motion. One curve family for the whole site, so every transition feels
+     like it came from the same place. The enter curve is the iOS sheet curve:
+     a fast start that settles rather than bounces. Exits are quicker than
+     entrances, because leaving should not cost the reader time. */
+  --ease-out: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --dur-enter: 260ms;
+  --dur-exit: 190ms;
+  --dur-micro: 160ms;
+  /* Media crossfades read better a little slower than UI. */
+  --dur-media: 420ms;
+
   --tour-steps: 9;
   --tour-step-h: 108svh;
   --header-h: 76px;
@@ -22,6 +34,8 @@
 }
 
 html {
+  /* Anchor jumps are eased in script.js so they share the site's curve and
+     stop the moment the reader scrolls. This stays as the no-JS fallback. */
   scroll-behavior: smooth;
   scroll-padding-top: var(--header-h);
 }
@@ -127,7 +141,7 @@ a {
 .hero-video {
   display: none;
   opacity: 0;
-  transition: opacity 600ms ease;
+  transition: opacity var(--dur-media) var(--ease-out);
 }
 
 .hero-video.is-playing {
@@ -205,14 +219,20 @@ a {
   font-size: 0.92rem;
   font-weight: 700;
   transition:
-    transform 180ms ease,
-    background 180ms ease,
-    color 180ms ease,
-    border-color 180ms ease;
+    transform var(--dur-micro) var(--ease-out),
+    background var(--dur-micro) var(--ease-out),
+    color var(--dur-micro) var(--ease-out),
+    border-color var(--dur-micro) var(--ease-out);
 }
 
 .button:hover {
   transform: translateY(-2px);
+}
+
+/* Press feedback: the control gives under the finger, and springs back. */
+.button:active {
+  transform: scale(0.94);
+  transition-duration: 90ms;
 }
 
 .button-primary {
@@ -307,7 +327,7 @@ a {
 
 .review-summary {
   display: grid;
-  align-content: end;
+  align-content: start;
   min-height: 286px;
   background:
     linear-gradient(160deg, rgba(23, 20, 17, 0.92), rgba(31, 58, 63, 0.82)),
@@ -315,14 +335,25 @@ a {
   color: var(--white);
 }
 
-.rating-mark {
-  display: block;
-  margin-bottom: 24px;
-  font-family:
-    ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-  font-size: clamp(4rem, 8vw, 6.8rem);
-  font-weight: 600;
-  line-height: 0.82;
+.review-summary .review-badge-stars {
+  margin: 0 0 auto;
+  color: var(--saffron);
+  font-size: 1.15rem;
+  letter-spacing: 0.14em;
+}
+
+.review-link {
+  display: inline-block;
+  margin-top: 18px;
+  color: var(--white);
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.review-link::after {
+  content: " \2192";
 }
 
 .review-summary h3 {
@@ -359,10 +390,10 @@ a {
   min-height: 100%;
   opacity: 0;
   pointer-events: none;
-  transform: translateX(24px) scale(0.985);
+  transform: translateX(18px) scale(0.99);
   transition:
-    opacity 520ms cubic-bezier(0.19, 1, 0.22, 1),
-    transform 760ms cubic-bezier(0.19, 1, 0.22, 1);
+    opacity var(--dur-media) var(--ease-out),
+    transform var(--dur-media) var(--ease-out);
 }
 
 .review-card.is-current {
@@ -401,26 +432,37 @@ a {
 .review-dots {
   display: flex;
   justify-content: center;
-  gap: 8px;
+  gap: 11px;
   margin-top: 16px;
 }
 
 .review-dot {
-  width: 8px;
-  height: 8px;
+  width: 9px;
+  height: 9px;
   border: 0;
   border-radius: 999px;
   padding: 0;
-  background: rgba(23, 20, 17, 0.24);
+  background: var(--ink);
+  opacity: 0.22;
   cursor: pointer;
+  /* Transform and opacity only - animating width would relayout the row. */
   transition:
-    width 260ms ease,
-    background 260ms ease;
+    transform var(--dur-enter) var(--ease-out),
+    opacity var(--dur-enter) var(--ease-out);
 }
 
 .review-dot.is-current {
-  width: 26px;
-  background: var(--ink);
+  opacity: 1;
+  transform: scale(1.3);
+}
+
+.review-dot:active {
+  transform: scale(0.8);
+  transition-duration: 90ms;
+}
+
+.review-dot.is-current:active {
+  transform: scale(1.1);
 }
 
 .tour {
@@ -452,8 +494,8 @@ a {
   filter: blur(10px) saturate(1.08) contrast(1.04);
   transform: scale(1.06);
   transition:
-    opacity 520ms ease,
-    transform 920ms cubic-bezier(0.19, 1, 0.22, 1);
+    opacity var(--dur-media) var(--ease-out),
+    transform 900ms var(--ease-out);
 }
 
 .tour-stage.is-changing .stage-backdrop img {
@@ -478,8 +520,8 @@ a {
     0 0 0 10px rgba(255, 255, 255, 0.03);
   transform: translateY(-48%);
   transition:
-    opacity 360ms ease,
-    transform 820ms cubic-bezier(0.19, 1, 0.22, 1);
+    opacity var(--dur-enter) var(--ease-out),
+    transform 820ms var(--ease-out);
 }
 
 .stage-device video,
@@ -494,7 +536,7 @@ a {
   position: absolute;
   inset: 0;
   opacity: 0;
-  transition: opacity 460ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity var(--dur-media) var(--ease-out);
 }
 
 .stage-video.is-active {
@@ -550,8 +592,8 @@ a {
   opacity: 0.42;
   text-shadow: 0 2px 26px rgba(0, 0, 0, 0.7);
   transition:
-    opacity 240ms ease,
-    transform 420ms ease;
+    opacity var(--dur-enter) var(--ease-out),
+    transform 420ms var(--ease-out);
 }
 
 .tour-step {
@@ -677,10 +719,10 @@ a {
   inset: 0;
   margin: 0;
   opacity: 0;
-  transform: scale(1.035);
+  transform: scale(1.025);
   transition:
-    opacity 560ms cubic-bezier(0.19, 1, 0.22, 1),
-    transform 1100ms cubic-bezier(0.19, 1, 0.22, 1);
+    opacity var(--dur-media) var(--ease-out),
+    transform 900ms var(--ease-out);
 }
 
 .gallery-slide.is-current {
@@ -707,26 +749,37 @@ a {
 
 .gallery-dots {
   display: flex;
-  gap: 8px;
+  gap: 11px;
   align-items: center;
 }
 
 .gallery-dot {
-  width: 8px;
-  height: 8px;
+  width: 9px;
+  height: 9px;
   border: 0;
   border-radius: 999px;
   padding: 0;
-  background: rgba(23, 20, 17, 0.24);
+  background: var(--ink);
+  opacity: 0.22;
   cursor: pointer;
+  /* Transform and opacity only - animating width would relayout the row. */
   transition:
-    width 260ms ease,
-    background 260ms ease;
+    transform var(--dur-enter) var(--ease-out),
+    opacity var(--dur-enter) var(--ease-out);
 }
 
 .gallery-dot.is-current {
-  width: 26px;
-  background: var(--ink);
+  opacity: 1;
+  transform: scale(1.3);
+}
+
+.gallery-dot:active {
+  transform: scale(0.8);
+  transition-duration: 90ms;
+}
+
+.gallery-dot.is-current:active {
+  transform: scale(1.1);
 }
 
 .society {
@@ -1082,10 +1135,6 @@ a {
     padding: 22px;
   }
 
-  .rating-mark {
-    font-size: 4.2rem;
-  }
-
   .book {
     min-height: 82svh;
   }
@@ -1103,9 +1152,17 @@ a {
   *,
   *::before,
   *::after {
-    transition-duration: 1ms !important;
-    animation-duration: 1ms !important;
-    animation-iteration-count: 1 !important;
+    transition: none !important;
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Nothing should arrive by moving. */
+  .review-card,
+  .gallery-slide,
+  .stage-video,
+  .tour-step {
+    transform: none !important;
   }
 }
 
@@ -1124,16 +1181,26 @@ a {
   color: var(--white);
   font-size: 0.9rem;
   font-weight: 700;
-  transition: top 160ms ease;
+  transition: transform var(--dur-enter) var(--ease-out);
 }
 
 .skip-link:focus {
-  top: 0;
+  transform: translateY(100px);
 }
 
 /* ------------------------------------------------------------------ *
  * Visible focus, for keyboard use
  * ------------------------------------------------------------------ */
+
+.site-footer a,
+.review-link {
+  transition: opacity var(--dur-micro) var(--ease-out);
+}
+
+.site-footer a:active,
+.review-link:active {
+  opacity: 0.6;
+}
 
 a:focus-visible,
 button:focus-visible {
@@ -1171,13 +1238,19 @@ button:focus-visible {
   background: rgba(23, 20, 17, 0.92);
   backdrop-filter: blur(18px);
   color: var(--white);
-  /* Hidden until the hero scrolls away. */
+  /* Hidden until the hero scrolls away. Leaving is quicker than arriving. */
   transform: translateY(110%);
-  transition: transform 320ms cubic-bezier(0.19, 1, 0.22, 1);
+  transition: transform var(--dur-exit) var(--ease-in);
 }
 
 .booking-bar.is-visible {
   transform: translateY(0);
+  transition: transform var(--dur-enter) var(--ease-out);
+}
+
+/* While sliding out it must not swallow taps meant for the page. */
+.booking-bar:not(.is-visible) {
+  pointer-events: none;
 }
 
 .booking-bar-meta {

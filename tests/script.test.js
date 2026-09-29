@@ -30,6 +30,8 @@ const {
   isConstrained,
   preloadImage,
   createCarousel,
+  cubicBezier,
+  setPresence,
   mediaCache,
 } = require("../script.js");
 
@@ -265,5 +267,94 @@ describe("createCarousel()", () => {
     createCarousel(root, { ...options, reducedMotion: { matches: false } });
     expect(window.setInterval).toHaveBeenCalledWith(expect.any(Function), 1000);
     window.setInterval.mockRestore();
+  });
+});
+
+// ---------------------------------------------------------------------------
+
+describe("cubicBezier()", () => {
+  const easeOut = cubicBezier([0.32, 0.72, 0, 1]);
+
+  test("is pinned at both ends", () => {
+    expect(easeOut(0)).toBe(0);
+    expect(easeOut(1)).toBe(1);
+  });
+
+  test("clamps out-of-range input", () => {
+    expect(easeOut(-0.5)).toBe(0);
+    expect(easeOut(1.5)).toBe(1);
+  });
+
+  test("never goes backwards", () => {
+    let previous = 0;
+    for (let t = 0; t <= 1; t += 0.05) {
+      const value = easeOut(t);
+      expect(value).toBeGreaterThanOrEqual(previous - 1e-9);
+      previous = value;
+    }
+  });
+
+  test("front-loads the movement, which is what makes it feel quick", () => {
+    // The iOS curve should be well past halfway by the time a third of the
+    // duration has elapsed. A linear curve would be at 0.33.
+    expect(easeOut(0.33)).toBeGreaterThan(0.6);
+  });
+
+  test("a linear control curve stays linear", () => {
+    const linear = cubicBezier([0.33, 0.33, 0.67, 0.67]);
+    expect(linear(0.5)).toBeCloseTo(0.5, 2);
+  });
+});
+
+// ---------------------------------------------------------------------------
+
+describe("setPresence()", () => {
+  let el;
+
+  beforeEach(() => {
+    jest.useFakeTimers();
+    el = document.createElement("div");
+    document.body.appendChild(el);
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+    document.body.innerHTML = "";
+  });
+
+  test("opening marks it visible and exposes it", () => {
+    setPresence(el, true);
+    expect(el.dataset.state).toBe("open");
+    expect(el.classList.contains("is-visible")).toBe(true);
+    expect(el.hasAttribute("aria-hidden")).toBe(false);
+  });
+
+  test("closing hides it immediately from assistive tech", () => {
+    setPresence(el, true);
+    setPresence(el, false);
+    expect(el.dataset.state).toBe("closing");
+    expect(el.getAttribute("aria-hidden")).toBe("true");
+    expect(el.classList.contains("is-visible")).toBe(false);
+  });
+
+  test("stays mounted until the exit animation has run", () => {
+    setPresence(el, true);
+    setPresence(el, false, 190);
+    jest.advanceTimersByTime(150);
+    expect(el.dataset.state).toBe("closing");
+    jest.advanceTimersByTime(60);
+    expect(el.dataset.state).toBe("closed");
+  });
+
+  test("reopening cancels a pending close", () => {
+    setPresence(el, true);
+    setPresence(el, false, 190);
+    setPresence(el, true);
+    jest.advanceTimersByTime(500);
+    expect(el.dataset.state).toBe("open");
+  });
+
+  test("does not throw on a missing element", () => {
+    expect(() => setPresence(null, true)).not.toThrow();
   });
 });

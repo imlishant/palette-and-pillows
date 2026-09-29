@@ -94,6 +94,135 @@ function preloadVideo(src, preload = "metadata") {
 }
 
 /* ------------------------------------------------------------------ *
+ * Motion
+ *
+ * The same easing the stylesheet uses, so scripted movement and CSS
+ * transitions are visibly the same family. Keep these in step with the
+ * --ease-* and --dur-* tokens in styles.css.
+ * ------------------------------------------------------------------ */
+
+const EASE_OUT = [0.32, 0.72, 0, 1];
+const DUR_EXIT = 190;
+
+/** Evaluate a cubic-bezier timing function at time t (0..1). */
+function cubicBezier([x1, y1, x2, y2]) {
+  const curveX = (t) => {
+    const u = 1 - t;
+    return 3 * u * u * t * x1 + 3 * u * t * t * x2 + t * t * t;
+  };
+  const curveY = (t) => {
+    const u = 1 - t;
+    return 3 * u * u * t * y1 + 3 * u * t * t * y2 + t * t * t;
+  };
+
+  return (x) => {
+    if (x <= 0) return 0;
+    if (x >= 1) return 1;
+    /* Binary search for the parameter that puts the curve at x. Cheap enough
+       at 60fps and avoids the derivative edge cases of Newton-Raphson. */
+    let low = 0;
+    let high = 1;
+    let t = x;
+    for (let i = 0; i < 20; i += 1) {
+      const estimate = curveX(t);
+      if (Math.abs(estimate - x) < 0.0005) break;
+      if (estimate < x) low = t;
+      else high = t;
+      t = (low + high) / 2;
+    }
+    return curveY(t);
+  };
+}
+
+const easeOut = cubicBezier(EASE_OUT);
+
+/**
+ * Keep an element mounted through its exit animation.
+ *
+ * Nothing on this page unmounts from the DOM, so this exists for the one
+ * case that needs it - an element that must stop taking input the instant
+ * it starts leaving, not when it finishes.
+ */
+function setPresence(element, open, exitDuration = DUR_EXIT) {
+  if (!element) {
+    return;
+  }
+
+  window.clearTimeout(element._presenceTimer);
+
+  if (open) {
+    element.dataset.state = "open";
+    element.removeAttribute("aria-hidden");
+    element.classList.add("is-visible");
+    return;
+  }
+
+  element.dataset.state = "closing";
+  element.setAttribute("aria-hidden", "true");
+  element.classList.remove("is-visible");
+
+  const instant = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  element._presenceTimer = window.setTimeout(
+    () => {
+      element.dataset.state = "closed";
+    },
+    instant ? 0 : exitDuration
+  );
+}
+
+/**
+ * Scroll to a position on the site's own easing curve, and hand control back
+ * the moment the reader touches anything.
+ */
+function glideTo(targetY, onDone) {
+  const startY = window.scrollY;
+  const distance = targetY - startY;
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || Math.abs(distance) < 2) {
+    window.scrollTo(0, targetY);
+    onDone?.();
+    return;
+  }
+
+  /* Long jumps need longer, but never so long that it feels slow. */
+  const duration = Math.min(760, Math.max(380, Math.abs(distance) * 0.45));
+  const start = performance.now();
+  let cancelled = false;
+
+  function cancel() {
+    cancelled = true;
+  }
+
+  const events = ["wheel", "touchstart", "keydown", "pointerdown"];
+  events.forEach((name) =>
+    window.addEventListener(name, cancel, { passive: true, once: true })
+  );
+
+  function cleanup() {
+    events.forEach((name) => window.removeEventListener(name, cancel));
+  }
+
+  function step(now) {
+    if (cancelled) {
+      cleanup();
+      return;
+    }
+
+    const progress = Math.min(1, (now - start) / duration);
+    window.scrollTo(0, startY + distance * easeOut(progress));
+
+    if (progress < 1) {
+      window.requestAnimationFrame(step);
+    } else {
+      cleanup();
+      onDone?.();
+    }
+  }
+
+  window.requestAnimationFrame(step);
+}
+
+/* ------------------------------------------------------------------ *
  * Carousel
  *
  * The gallery and the review strip are the same component with different
@@ -685,15 +814,46 @@ function init() {
     }
   });
 
+  /* ---- In-page navigation ---- */
+
+  const headerOffset = () =>
+    parseInt(getComputedStyle(document.documentElement).scrollPaddingTop, 10) || 0;
+
+  document.querySelectorAll('a[href^="#"]').forEach((link) => {
+    link.addEventListener("click", (event) => {
+      const id = link.getAttribute("href");
+      if (!id || id === "#") {
+        return;
+      }
+
+      const target = document.querySelector(id);
+      if (!target) {
+        return;
+      }
+
+      event.preventDefault();
+      const top = target.getBoundingClientRect().top + window.scrollY - headerOffset();
+      glideTo(top, () => {
+        /* Keep the address bar and history honest without a second jump. */
+        history.replaceState(null, "", id);
+      });
+    });
+  });
+
   /* ---- Sticky mobile booking bar ---- */
 
   const bookingBar = document.querySelector("[data-booking-bar]");
   const hero = document.querySelector(".hero");
 
+  if (bookingBar) {
+    bookingBar.dataset.state = "closed";
+    bookingBar.setAttribute("aria-hidden", "true");
+  }
+
   if (bookingBar && hero && "IntersectionObserver" in window) {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        bookingBar.classList.toggle("is-visible", !entry.isIntersecting);
+        setPresence(bookingBar, !entry.isIntersecting);
       },
       { rootMargin: "-40% 0px 0px 0px" }
     );
@@ -713,6 +873,8 @@ if (typeof module !== "undefined" && module.exports) {
     preloadImage,
     preloadVideo,
     createCarousel,
+    cubicBezier,
+    setPresence,
     mediaCache,
     init,
   };
